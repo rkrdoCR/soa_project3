@@ -1,0 +1,40 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build & debug file",
+      "type": "shell",
+      "command": "gcc",
+      "args": [
+        "-g",
+        "-o",
+        "${workspaceFolder}/${fileBasenameNoExtension}",
+        "${file}",
+        "`pkg-config", "--cflags", "--libs", "gtk+-3.0`",
+        //"`pkg-config", "--cflags gtk+-3.0`", "`pkg-config", "--libs", "gtk+-3.0`",
+        "-I.", "-Wall", "-Wextra"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "build & run file",
+      "type": "shell",
+      "command": "gcc",
+      "args": [
+        "-o",
+        "${workspaceFolder}/${fileBasenameNoExtension}",
+        "${file}",
+        "`pkg-config", "--cflags", "--libs", "gtk+-3.0`",
+        // "`pkg-config", "--cflags gtk+-3.0`", "`pkg-config", "--libs", "gtk+-3.0`",
+        "-I."
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}
