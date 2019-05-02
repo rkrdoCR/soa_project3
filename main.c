@@ -1,32 +1,61 @@
+#include <stdlib.h> 
 #include <gtk/gtk.h>
 
-void start_clicked(GtkWidget *widget, gpointer data) {
-    
-  g_print("start clicked\n");
+typedef struct
+{
+    GtkWidget *e1, *e2, *e3, *e4, *e5, *e6,
+        *p1, *p2, *p3, *p4, *p5, *p6,
+        *cb_schedulable, *cb_combine_all,
+        *cb_rm, *cb_edf, *cb_llf;
+
+} form_data;
+
+void start_clicked(GtkWidget *widget, form_data *data)
+{
+    //TODO: make these into a struct
+    int schedulable = gtk_toggle_button_get_active(GTK_CHECK_BUTTON(data->cb_schedulable));
+    int combineAll = gtk_toggle_button_get_active(GTK_CHECK_BUTTON(data->cb_combine_all));
+
+    int rm = gtk_toggle_button_get_active(GTK_CHECK_BUTTON(data->cb_rm));
+    int edf = gtk_toggle_button_get_active(GTK_CHECK_BUTTON(data->cb_edf));
+    int llf = gtk_toggle_button_get_active(GTK_CHECK_BUTTON(data->cb_llf));
+
+    int e1 = atoi(gtk_entry_get_text(GTK_ENTRY(data->e1)));
+    int e2 = atoi(gtk_entry_get_text(GTK_ENTRY(data->e2)));
+    int e3 = atoi(gtk_entry_get_text(GTK_ENTRY(data->e3)));
+    int e4 = atoi(gtk_entry_get_text(GTK_ENTRY(data->e4)));
+    int e5 = atoi(gtk_entry_get_text(GTK_ENTRY(data->e5)));
+    int e6 = atoi(gtk_entry_get_text(GTK_ENTRY(data->e6)));
+
+    int p1 = atoi(gtk_entry_get_text(GTK_ENTRY(data->p1)));
+    int p2 = atoi(gtk_entry_get_text(GTK_ENTRY(data->p2)));
+    int p3 = atoi(gtk_entry_get_text(GTK_ENTRY(data->p3)));
+    int p4 = atoi(gtk_entry_get_text(GTK_ENTRY(data->p4)));
+    int p5 = atoi(gtk_entry_get_text(GTK_ENTRY(data->p5)));
+    int p6 = atoi(gtk_entry_get_text(GTK_ENTRY(data->p6)));
+
+    //TODO: add validations and call the functions according to the data recieved
 }
 
-void reset_clicked(GtkWidget *widget, gpointer data) {
-    
-  g_print("reset clicked\n");
+void reset_clicked(GtkWidget *widget, gpointer data)
+{
+
+    g_print("reset clicked\n");
 }
 
 int main(int argc, char *argv[])
 {
+    form_data f_data;
+
     static GtkWidget *window = NULL;
 
-    GtkWidget *main_grid, *tasks_grid;
-    GtkWidget *tasks_vbox, *algo_hbox;
+    GtkWidget *main_grid, *tasks_grid,
+              *tasks_vbox, *algo_hbox;
 
     GtkWidget *t1_label, *t2_label, *t3_label,
-    *t4_label, *t5_label, *t6_label;
+              *t4_label, *t5_label, *t6_label;
 
     GtkWidget *start_button, *reset_button;
-
-    GtkWidget *t1_einput, *t2_einput, *t3_einput,
-    *t4_einput, *t5_einput, *t6_einput, *t1_pinput, 
-    *t2_pinput, *t3_pinput, *t4_pinput, *t5_pinput,
-    *t6_pinput, *cb_schedulable, *cb_rm,  *cb_edf, *cb_llf,
-    *cb_combine_all;
 
     GtkWidget *vbox;
     GtkWidget *hbox;
@@ -43,10 +72,9 @@ int main(int argc, char *argv[])
     gtk_container_set_border_width(GTK_CONTAINER(window), 5);
 
     main_grid = gtk_grid_new();
-
     tasks_grid = gtk_grid_new();
-    gtk_grid_set_column_spacing (tasks_grid, 10);
-    gtk_grid_set_row_spacing (tasks_grid, 10);
+    gtk_grid_set_column_spacing(tasks_grid, 10);
+    gtk_grid_set_row_spacing(tasks_grid, 10);
 
     g_signal_connect(window, "destroy",
                      G_CALLBACK(gtk_main_quit),
@@ -55,11 +83,11 @@ int main(int argc, char *argv[])
     start_button = gtk_button_new_with_label("Start");
     reset_button = gtk_button_new_with_label("Reset");
 
-    g_signal_connect(G_OBJECT(start_button), "clicked", 
-      G_CALLBACK(start_clicked), NULL);
+    g_signal_connect(G_OBJECT(start_button), "clicked",
+                     G_CALLBACK(start_clicked), &f_data);
 
-    g_signal_connect(G_OBJECT(reset_button), "clicked", 
-      G_CALLBACK(reset_clicked), NULL);
+    g_signal_connect(G_OBJECT(reset_button), "clicked",
+                     G_CALLBACK(reset_clicked), NULL);
 
     gtk_container_set_border_width(GTK_CONTAINER(window), 10);
 
@@ -69,19 +97,19 @@ int main(int argc, char *argv[])
     gtk_container_add(GTK_CONTAINER(window), main_grid);
 
     frame_horz = gtk_frame_new("Tasks Setup");
-    frame_vert = gtk_frame_new ("Algorithms");
+    frame_vert = gtk_frame_new("Algorithms");
     gtk_box_pack_start(GTK_BOX(tasks_vbox), frame_horz, TRUE, TRUE, 10);
     gtk_box_pack_start(GTK_BOX(algo_hbox), frame_vert, TRUE, TRUE, 10);
 
     vbox = gtk_vbox_new(FALSE, 0);
-    gtk_box_set_spacing (GTK_BOX (vbox), 10);
+    gtk_box_set_spacing(GTK_BOX(vbox), 10);
     gtk_container_set_border_width(GTK_CONTAINER(vbox), 10);
     gtk_container_add(GTK_CONTAINER(frame_horz), vbox);
 
     hbox = gtk_hbox_new(FALSE, 0);
-    gtk_box_set_spacing (GTK_BOX (hbox), 10);
-    gtk_container_set_border_width (GTK_CONTAINER (hbox), 10);
-    gtk_container_add (GTK_CONTAINER (frame_vert), hbox);
+    gtk_box_set_spacing(GTK_BOX(hbox), 10);
+    gtk_container_set_border_width(GTK_CONTAINER(hbox), 10);
+    gtk_container_add(GTK_CONTAINER(frame_vert), hbox);
 
     t1_label = gtk_label_new("Task 1");
     t2_label = gtk_label_new("Task 2");
@@ -90,59 +118,58 @@ int main(int argc, char *argv[])
     t5_label = gtk_label_new("Task 5");
     t6_label = gtk_label_new("Task 6");
 
-    t1_einput = gtk_entry_new();
-    t2_einput = gtk_entry_new();
-    t3_einput = gtk_entry_new();
-    t4_einput = gtk_entry_new();
-    t5_einput = gtk_entry_new();
-    t6_einput = gtk_entry_new();
+    f_data.e1 = gtk_entry_new();
+    f_data.e2 = gtk_entry_new();
+    f_data.e3 = gtk_entry_new();
+    f_data.e4 = gtk_entry_new();
+    f_data.e5 = gtk_entry_new();
+    f_data.e6 = gtk_entry_new();
 
-    t1_pinput = gtk_entry_new();
-    t2_pinput = gtk_entry_new();
-    t3_pinput = gtk_entry_new();
-    t4_pinput = gtk_entry_new();
-    t5_pinput = gtk_entry_new();
-    t6_pinput = gtk_entry_new();
+    f_data.p1 = gtk_entry_new();
+    f_data.p2 = gtk_entry_new();
+    f_data.p3 = gtk_entry_new();
+    f_data.p4 = gtk_entry_new();
+    f_data.p5 = gtk_entry_new();
+    f_data.p6 = gtk_entry_new();
 
-    cb_schedulable = gtk_check_button_new_with_label("Schedulable");
-    cb_combine_all = gtk_check_button_new_with_label("Combine All");
+    f_data.cb_schedulable = gtk_check_button_new_with_label("Schedulable");
+    f_data.cb_combine_all = gtk_check_button_new_with_label("Combine All");
+    f_data.cb_rm = gtk_check_button_new_with_label("RM");
+    f_data.cb_edf = gtk_check_button_new_with_label("EDF");
+    f_data.cb_llf = gtk_check_button_new_with_label("LLF");
 
-    cb_rm = gtk_check_button_new_with_label("RM");
-    cb_edf = gtk_check_button_new_with_label("EDF");
-    cb_llf = gtk_check_button_new_with_label("LLF");
+    gtk_grid_attach(GTK_GRID(tasks_grid), t1_label, 0, 0, 1, 1);
+    gtk_grid_attach(GTK_GRID(tasks_grid), f_data.e1, 1, 0, 1, 1);
+    gtk_grid_attach(GTK_GRID(tasks_grid), f_data.p1, 2, 0, 1, 1);
 
-    gtk_grid_attach(GTK_GRID(tasks_grid), t1_label,  0, 0, 1, 1);
-    gtk_grid_attach(GTK_GRID(tasks_grid), t1_einput, 1, 0, 1, 1);
-    gtk_grid_attach(GTK_GRID(tasks_grid), t1_pinput, 2, 0, 1, 1);
+    gtk_grid_attach(GTK_GRID(tasks_grid), t2_label, 0, 1, 1, 1);
+    gtk_grid_attach(GTK_GRID(tasks_grid), f_data.e2, 1, 1, 1, 1);
+    gtk_grid_attach(GTK_GRID(tasks_grid), f_data.p2, 2, 1, 1, 1);
 
-    gtk_grid_attach(GTK_GRID(tasks_grid), t2_label,  0, 1, 1, 1);
-    gtk_grid_attach(GTK_GRID(tasks_grid), t2_einput, 1, 1, 1, 1);
-    gtk_grid_attach(GTK_GRID(tasks_grid), t2_pinput, 2, 1, 1, 1);
+    gtk_grid_attach(GTK_GRID(tasks_grid), t3_label, 0, 2, 1, 1);
+    gtk_grid_attach(GTK_GRID(tasks_grid), f_data.e3, 1, 2, 1, 1);
+    gtk_grid_attach(GTK_GRID(tasks_grid), f_data.p3, 2, 2, 1, 1);
 
-    gtk_grid_attach(GTK_GRID(tasks_grid), t3_label,  0, 2, 1, 1);
-    gtk_grid_attach(GTK_GRID(tasks_grid), t3_einput, 1, 2, 1, 1);
-    gtk_grid_attach(GTK_GRID(tasks_grid), t3_pinput, 2, 2, 1, 1);
+    gtk_grid_attach(GTK_GRID(tasks_grid), t4_label, 0, 3, 1, 1);
+    gtk_grid_attach(GTK_GRID(tasks_grid), f_data.e4, 1, 3, 1, 1);
+    gtk_grid_attach(GTK_GRID(tasks_grid), f_data.p4, 2, 3, 1, 1);
 
-    gtk_grid_attach(GTK_GRID(tasks_grid), t4_label,  0, 3, 1, 1);
-    gtk_grid_attach(GTK_GRID(tasks_grid), t4_einput, 1, 3, 1, 1);
-    gtk_grid_attach(GTK_GRID(tasks_grid), t4_pinput, 2, 3, 1, 1);
+    gtk_grid_attach(GTK_GRID(tasks_grid), t5_label, 0, 4, 1, 1);
+    gtk_grid_attach(GTK_GRID(tasks_grid), f_data.e5, 1, 4, 1, 1);
+    gtk_grid_attach(GTK_GRID(tasks_grid), f_data.p5, 2, 4, 1, 1);
 
-    gtk_grid_attach(GTK_GRID(tasks_grid), t5_label,  0, 4, 1, 1);
-    gtk_grid_attach(GTK_GRID(tasks_grid), t5_einput, 1, 4, 1, 1);
-    gtk_grid_attach(GTK_GRID(tasks_grid), t5_pinput, 2, 4, 1, 1);
+    gtk_grid_attach(GTK_GRID(tasks_grid), t6_label, 0, 5, 1, 1);
+    gtk_grid_attach(GTK_GRID(tasks_grid), f_data.e6, 1, 5, 1, 1);
+    gtk_grid_attach(GTK_GRID(tasks_grid), f_data.p6, 2, 5, 1, 1);
 
-    gtk_grid_attach(GTK_GRID(tasks_grid), t6_label,  0, 5, 1, 1);
-    gtk_grid_attach(GTK_GRID(tasks_grid), t6_einput, 1, 5, 1, 1);
-    gtk_grid_attach(GTK_GRID(tasks_grid), t6_pinput, 2, 5, 1, 1);
-
-    gtk_grid_attach(GTK_GRID(tasks_grid), cb_schedulable, 1, 6, 1, 1);
-    gtk_grid_attach(GTK_GRID(tasks_grid), cb_combine_all, 2, 6, 1, 1);
+    gtk_grid_attach(GTK_GRID(tasks_grid), f_data.cb_schedulable, 1, 6, 1, 1);
+    gtk_grid_attach(GTK_GRID(tasks_grid), f_data.cb_combine_all, 2, 6, 1, 1);
 
     gtk_container_add(GTK_CONTAINER(vbox), tasks_grid);
 
-    gtk_box_pack_start (GTK_BOX (hbox), cb_rm, TRUE, TRUE, 0);
-    gtk_box_pack_start (GTK_BOX (hbox), cb_edf, TRUE, TRUE, 0);
-    gtk_box_pack_start (GTK_BOX (hbox), cb_llf, TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(hbox), f_data.cb_rm, TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(hbox), f_data.cb_edf, TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(hbox), f_data.cb_llf, TRUE, TRUE, 0);
 
     gtk_grid_attach(GTK_GRID(main_grid), tasks_vbox, 0, 0, 4, 1);
     gtk_grid_attach(GTK_GRID(main_grid), algo_hbox, 0, 2, 1, 1);
