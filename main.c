@@ -1,17 +1,15 @@
-#include <stdlib.h> 
-#include <gtk/gtk.h>
+#include <stdlib.h>
+#include "data_structures/form_data.h"
+#include "data_structures/settings.h"
 
-typedef struct
-{
-    GtkWidget *e1, *e2, *e3, *e4, *e5, *e6,
-        *p1, *p2, *p3, *p4, *p5, *p6,
-        *cb_schedulable, *cb_combine_all,
-        *cb_rm, *cb_edf, *cb_llf;
-
-} form_data;
+#define MAX_ITEMS 6
 
 void start_clicked(GtkWidget *widget, form_data *data)
 {
+   
+    int executionTimes[MAX_ITEMS];
+    int periods[MAX_ITEMS];
+
     //TODO: make these into a struct
     int schedulable = gtk_toggle_button_get_active(GTK_CHECK_BUTTON(data->cb_schedulable));
     int combineAll = gtk_toggle_button_get_active(GTK_CHECK_BUTTON(data->cb_combine_all));
@@ -20,20 +18,21 @@ void start_clicked(GtkWidget *widget, form_data *data)
     int edf = gtk_toggle_button_get_active(GTK_CHECK_BUTTON(data->cb_edf));
     int llf = gtk_toggle_button_get_active(GTK_CHECK_BUTTON(data->cb_llf));
 
-    int e1 = atoi(gtk_entry_get_text(GTK_ENTRY(data->e1)));
-    int e2 = atoi(gtk_entry_get_text(GTK_ENTRY(data->e2)));
-    int e3 = atoi(gtk_entry_get_text(GTK_ENTRY(data->e3)));
-    int e4 = atoi(gtk_entry_get_text(GTK_ENTRY(data->e4)));
-    int e5 = atoi(gtk_entry_get_text(GTK_ENTRY(data->e5)));
-    int e6 = atoi(gtk_entry_get_text(GTK_ENTRY(data->e6)));
+    executionTimes[0] = atoi(gtk_entry_get_text(GTK_ENTRY(data->e1)));
+    executionTimes[1] = atoi(gtk_entry_get_text(GTK_ENTRY(data->e2)));
+    executionTimes[2] = atoi(gtk_entry_get_text(GTK_ENTRY(data->e3)));
+    executionTimes[3] = atoi(gtk_entry_get_text(GTK_ENTRY(data->e4)));
+    executionTimes[4] = atoi(gtk_entry_get_text(GTK_ENTRY(data->e5)));
+    executionTimes[5] = atoi(gtk_entry_get_text(GTK_ENTRY(data->e6)));
 
-    int p1 = atoi(gtk_entry_get_text(GTK_ENTRY(data->p1)));
-    int p2 = atoi(gtk_entry_get_text(GTK_ENTRY(data->p2)));
-    int p3 = atoi(gtk_entry_get_text(GTK_ENTRY(data->p3)));
-    int p4 = atoi(gtk_entry_get_text(GTK_ENTRY(data->p4)));
-    int p5 = atoi(gtk_entry_get_text(GTK_ENTRY(data->p5)));
-    int p6 = atoi(gtk_entry_get_text(GTK_ENTRY(data->p6)));
+    periods[0] = atoi(gtk_entry_get_text(GTK_ENTRY(data->p1)));
+    periods[1] = atoi(gtk_entry_get_text(GTK_ENTRY(data->p2)));
+    periods[2]= atoi(gtk_entry_get_text(GTK_ENTRY(data->p3)));
+    periods[3] = atoi(gtk_entry_get_text(GTK_ENTRY(data->p4)));
+    periods[4] = atoi(gtk_entry_get_text(GTK_ENTRY(data->p5)));
+    periods[5] = atoi(gtk_entry_get_text(GTK_ENTRY(data->p6)));
 
+    //settings* formSettings = fillSettings(schedulable, combineAll, rm,  edf,  llf);//arrays missing
     //TODO: add validations and call the functions according to the data recieved
 }
 
