@@ -1,17 +1,40 @@
 #include <stdlib.h>
 #include "data_structures/form_data.h"
 #include "data_structures/settings.h"
+#include "data_structures/algo_results.h"
 
 #define MAX_ITEMS 6
 
-void start_clicked(GtkWidget *widget, form_data *data)
+void generateBeamer(settings *formSettings)
 {
-   
+    //int mcm = computeMCM();
+
+    algo_results algoResults[3];
+
+    if(formSettings->rm)
+    {
+        //algo_results[0] = runRM();
+    }
+
+    if(formSettings->edf)
+    {
+        //algo_results[1] = runEDF();
+    }
+
+    if(formSettings->llf)
+    {
+        //algo_results[2] = runLLF();
+    }
+
+    //generateBeamerDoc(mcm, algo_results);
+}
+
+void start_clicked(GtkWidget *widget, form_data *data)
+{   
     int executionTimes[MAX_ITEMS];
     int periods[MAX_ITEMS];
 
     //TODO: make these into a struct
-    int schedulable = gtk_toggle_button_get_active(GTK_CHECK_BUTTON(data->cb_schedulable));
     int combineAll = gtk_toggle_button_get_active(GTK_CHECK_BUTTON(data->cb_combine_all));
 
     int rm = gtk_toggle_button_get_active(GTK_CHECK_BUTTON(data->cb_rm));
@@ -27,12 +50,13 @@ void start_clicked(GtkWidget *widget, form_data *data)
 
     periods[0] = atoi(gtk_entry_get_text(GTK_ENTRY(data->p1)));
     periods[1] = atoi(gtk_entry_get_text(GTK_ENTRY(data->p2)));
-    periods[2]= atoi(gtk_entry_get_text(GTK_ENTRY(data->p3)));
+    periods[2] = atoi(gtk_entry_get_text(GTK_ENTRY(data->p3)));
     periods[3] = atoi(gtk_entry_get_text(GTK_ENTRY(data->p4)));
     periods[4] = atoi(gtk_entry_get_text(GTK_ENTRY(data->p5)));
     periods[5] = atoi(gtk_entry_get_text(GTK_ENTRY(data->p6)));
 
-    //settings* formSettings = fillSettings(schedulable, combineAll, rm,  edf,  llf);//arrays missing
+    settings* formSettings = fillSettings(combineAll, rm,  edf,  llf);//arrays missing
+    generateBeamer(formSettings);
     //TODO: add validations and call the functions according to the data recieved
 }
 
@@ -131,7 +155,6 @@ int main(int argc, char *argv[])
     f_data.p5 = gtk_entry_new();
     f_data.p6 = gtk_entry_new();
 
-    f_data.cb_schedulable = gtk_check_button_new_with_label("Schedulable");
     f_data.cb_combine_all = gtk_check_button_new_with_label("Combine All");
     f_data.cb_rm = gtk_check_button_new_with_label("RM");
     f_data.cb_edf = gtk_check_button_new_with_label("EDF");
@@ -161,7 +184,6 @@ int main(int argc, char *argv[])
     gtk_grid_attach(GTK_GRID(tasks_grid), f_data.e6, 1, 5, 1, 1);
     gtk_grid_attach(GTK_GRID(tasks_grid), f_data.p6, 2, 5, 1, 1);
 
-    gtk_grid_attach(GTK_GRID(tasks_grid), f_data.cb_schedulable, 1, 6, 1, 1);
     gtk_grid_attach(GTK_GRID(tasks_grid), f_data.cb_combine_all, 2, 6, 1, 1);
 
     gtk_container_add(GTK_CONTAINER(vbox), tasks_grid);

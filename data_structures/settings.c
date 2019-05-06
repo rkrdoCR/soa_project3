@@ -1,9 +1,9 @@
 #include "settings.h"
 
-settings* fillSettings(int schedulable,int combineAll,int rm, int edf, int llf){
-    printf("Started filling");
+settings* fillSettings(int combineAll, int rm, int edf, int llf){
+
     settings* formSettings = malloc(sizeof(settings));
-    formSettings->schedulable = schedulable;
+    
     formSettings->combineAll = combineAll;
     formSettings->rm = rm;
     formSettings->edf = edf;

@@ -12,13 +12,12 @@ struct settings
     int edf;
     int llf;
     // checkboxes 
-    int schedulable;
     int combineAll;
 
 };
 
 typedef struct settings settings;
 
-settings* fillSettings(int schedulable,int combineAll,int rm, int edf, int llf);
+settings* fillSettings(int combineAll, int rm, int edf, int llf);
 
 #endif

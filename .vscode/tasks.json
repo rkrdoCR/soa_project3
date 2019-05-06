@@ -9,6 +9,7 @@
         "-g",
         "-o",
         "${workspaceFolder}/${fileBasenameNoExtension}",
+        "data_structures/settings.c",
         "${file}",
         "`pkg-config", "--cflags", "--libs", "gtk+-3.0`",
         //"`pkg-config", "--cflags gtk+-3.0`", "`pkg-config", "--libs", "gtk+-3.0`",
