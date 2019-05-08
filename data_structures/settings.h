@@ -3,10 +3,10 @@
 
 #include <stdlib.h>
 
-struct settings
+typedef struct 
 {
-    int executionTime[6];
-    int period[6];
+    int executionTimes[6];
+    int periods[6];
     //algorithms
     int rm;
     int edf;
@@ -14,10 +14,6 @@ struct settings
     // checkboxes 
     int combineAll;
 
-};
-
-typedef struct settings settings;
-
-settings* fillSettings(int combineAll, int rm, int edf, int llf);
+}simulation_settings;
 
 #endif

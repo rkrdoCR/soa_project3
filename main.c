@@ -1,63 +1,33 @@
 #include <stdlib.h>
 #include "data_structures/form_data.h"
 #include "data_structures/settings.h"
-#include "data_structures/algo_results.h"
-
-#define MAX_ITEMS 6
-
-void generateBeamer(settings *formSettings)
-{
-    //int mcm = computeMCM();
-
-    algo_results algoResults[3];
-
-    if(formSettings->rm)
-    {
-        //algo_results[0] = runRM();
-    }
-
-    if(formSettings->edf)
-    {
-        //algo_results[1] = runEDF();
-    }
-
-    if(formSettings->llf)
-    {
-        //algo_results[2] = runLLF();
-    }
-
-    //generateBeamerDoc(mcm, algo_results);
-}
+#include "utils/beamerGenerator.h"
 
 void start_clicked(GtkWidget *widget, form_data *data)
 {   
-    int executionTimes[MAX_ITEMS];
-    int periods[MAX_ITEMS];
+    simulation_settings *settings = malloc(sizeof(settings));
 
-    //TODO: make these into a struct
-    int combineAll = gtk_toggle_button_get_active(GTK_CHECK_BUTTON(data->cb_combine_all));
+    settings->combineAll = gtk_toggle_button_get_active(GTK_CHECK_BUTTON(data->cb_combine_all));
 
-    int rm = gtk_toggle_button_get_active(GTK_CHECK_BUTTON(data->cb_rm));
-    int edf = gtk_toggle_button_get_active(GTK_CHECK_BUTTON(data->cb_edf));
-    int llf = gtk_toggle_button_get_active(GTK_CHECK_BUTTON(data->cb_llf));
+    settings->rm = gtk_toggle_button_get_active(GTK_CHECK_BUTTON(data->cb_rm));
+    settings->edf = gtk_toggle_button_get_active(GTK_CHECK_BUTTON(data->cb_edf));
+    settings->llf = gtk_toggle_button_get_active(GTK_CHECK_BUTTON(data->cb_llf));
 
-    executionTimes[0] = atoi(gtk_entry_get_text(GTK_ENTRY(data->e1)));
-    executionTimes[1] = atoi(gtk_entry_get_text(GTK_ENTRY(data->e2)));
-    executionTimes[2] = atoi(gtk_entry_get_text(GTK_ENTRY(data->e3)));
-    executionTimes[3] = atoi(gtk_entry_get_text(GTK_ENTRY(data->e4)));
-    executionTimes[4] = atoi(gtk_entry_get_text(GTK_ENTRY(data->e5)));
-    executionTimes[5] = atoi(gtk_entry_get_text(GTK_ENTRY(data->e6)));
+    settings->executionTimes[0] = atoi(gtk_entry_get_text(GTK_ENTRY(data->e1)));
+    settings->executionTimes[1] = atoi(gtk_entry_get_text(GTK_ENTRY(data->e2)));
+    settings->executionTimes[2] = atoi(gtk_entry_get_text(GTK_ENTRY(data->e3)));
+    settings->executionTimes[3] = atoi(gtk_entry_get_text(GTK_ENTRY(data->e4)));
+    settings->executionTimes[4] = atoi(gtk_entry_get_text(GTK_ENTRY(data->e5)));
+    settings->executionTimes[5] = atoi(gtk_entry_get_text(GTK_ENTRY(data->e6)));
 
-    periods[0] = atoi(gtk_entry_get_text(GTK_ENTRY(data->p1)));
-    periods[1] = atoi(gtk_entry_get_text(GTK_ENTRY(data->p2)));
-    periods[2] = atoi(gtk_entry_get_text(GTK_ENTRY(data->p3)));
-    periods[3] = atoi(gtk_entry_get_text(GTK_ENTRY(data->p4)));
-    periods[4] = atoi(gtk_entry_get_text(GTK_ENTRY(data->p5)));
-    periods[5] = atoi(gtk_entry_get_text(GTK_ENTRY(data->p6)));
+    settings->periods[0] = atoi(gtk_entry_get_text(GTK_ENTRY(data->p1)));
+    settings->periods[1] = atoi(gtk_entry_get_text(GTK_ENTRY(data->p2)));
+    settings->periods[2] = atoi(gtk_entry_get_text(GTK_ENTRY(data->p3)));
+    settings->periods[3] = atoi(gtk_entry_get_text(GTK_ENTRY(data->p4)));
+    settings->periods[4] = atoi(gtk_entry_get_text(GTK_ENTRY(data->p5)));
+    settings->periods[5] = atoi(gtk_entry_get_text(GTK_ENTRY(data->p6)));
 
-    settings* formSettings = fillSettings(combineAll, rm,  edf,  llf);//arrays missing
-    generateBeamer(formSettings);
-    //TODO: add validations and call the functions according to the data recieved
+    generateBeamer(settings);
 }
 
 void reset_clicked(GtkWidget *widget, gpointer data)
@@ -155,7 +125,7 @@ int main(int argc, char *argv[])
     f_data.p5 = gtk_entry_new();
     f_data.p6 = gtk_entry_new();
 
-    f_data.cb_combine_all = gtk_check_button_new_with_label("Combine All");
+    f_data.cb_combine_all = gtk_check_button_new_with_label("Show all in slides");
     f_data.cb_rm = gtk_check_button_new_with_label("RM");
     f_data.cb_edf = gtk_check_button_new_with_label("EDF");
     f_data.cb_llf = gtk_check_button_new_with_label("LLF");
@@ -184,8 +154,6 @@ int main(int argc, char *argv[])
     gtk_grid_attach(GTK_GRID(tasks_grid), f_data.e6, 1, 5, 1, 1);
     gtk_grid_attach(GTK_GRID(tasks_grid), f_data.p6, 2, 5, 1, 1);
 
-    gtk_grid_attach(GTK_GRID(tasks_grid), f_data.cb_combine_all, 2, 6, 1, 1);
-
     gtk_container_add(GTK_CONTAINER(vbox), tasks_grid);
 
     gtk_box_pack_start(GTK_BOX(hbox), f_data.cb_rm, TRUE, TRUE, 0);
@@ -194,8 +162,10 @@ int main(int argc, char *argv[])
 
     gtk_grid_attach(GTK_GRID(main_grid), tasks_vbox, 0, 0, 4, 1);
     gtk_grid_attach(GTK_GRID(main_grid), algo_hbox, 0, 2, 1, 1);
-    gtk_grid_attach(GTK_GRID(main_grid), start_button, 2, 2, 1, 1);
-    gtk_grid_attach(GTK_GRID(main_grid), reset_button, 3, 2, 1, 1);
+    gtk_grid_attach(GTK_GRID(main_grid), start_button, 2, 3, 1, 1);
+    gtk_grid_attach(GTK_GRID(main_grid), reset_button, 3, 3, 1, 1);
+
+    gtk_grid_attach(GTK_GRID(main_grid), f_data.cb_combine_all, 2, 2, 2, 1);
 
     gtk_widget_show_all(window);
 
