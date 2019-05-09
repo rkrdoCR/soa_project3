@@ -82,7 +82,7 @@ void simulateRM(task *tasks, int count, int lcm, algo_results* results)
         push(&p_queue, tasks[i], tasks[i].period);
     }  
 
-    //prebuild matrix
+    //prebuild matrix (blanks and periods)
     int j, k;
     for (j = 0; j < count; j++)
     {
@@ -102,4 +102,6 @@ void simulateRM(task *tasks, int count, int lcm, algo_results* results)
                   
         }
     } 
+
+    //TODO: fill the matrix with tasks.
 }
