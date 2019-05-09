@@ -1,4 +1,5 @@
 #include "rate_monotonic.h"
+#include <stdio.h>
 
 double computeUtilization(task *tasks, int count);
 double computeUpperBound(int count);
@@ -55,22 +56,50 @@ double computeUtilization(task *tasks, int count)
 double computeUpperBound(int count)
 {
     double n = (double)count;
-    return n*((pow(2.0,1/n))-1);;
+    return n*((pow(2.0,1/n))-1);
 }
 
 void simulateRM(task *tasks, int count, int lcm, algo_results* results)
 {
-    int resultMatrix[count][lcm];
+    int c = 1, task_row = 0, column = 0;
+    task t;
+
+    //allocate matrix
+    results->matrix = (int **)malloc(count * sizeof(int *));
+    int a;
+    for (a = 0; a < count; a++) 
+    {
+         results->matrix[a] = (int *)malloc(lcm * sizeof(int));
+    }
 
     //add tasks to priority queue
+    tasks[0].task_number = c;
     Node *p_queue = newNode(tasks[0], tasks[0].period);
-
     int i;
     for (i = 1; i < count; i++)
     {
+        tasks[i].task_number = ++c;
         push(&p_queue, tasks[i], tasks[i].period);
-    }    
-    
-    
+    }  
 
+    //prebuild matrix
+    int j, k;
+    for (j = 0; j < count; j++)
+    {
+        int p = tasks[j].period;
+        int n = tasks[j].task_number;
+
+        for (k = 0; k < lcm; k++)
+        {
+            if(k > 0 && k % p == 0)
+            {
+                results->matrix[j][k] = n; 
+            }  
+            else
+            {
+                results->matrix[j][k] = 0;
+            }
+                  
+        }
+    } 
 }

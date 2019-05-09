@@ -3,6 +3,7 @@
 
 typedef struct
 {
+    int task_number;
     int execTime;
     int period;   
 } task;
