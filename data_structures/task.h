@@ -5,6 +5,7 @@ typedef struct
 {
     int task_number;
     int execTime;
+    int pendingExecTime;
     int period;   
 } task;
 

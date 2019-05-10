@@ -7,6 +7,7 @@
 #include "data_structures/algo_results.h"
 #include "data_structures/priority_queue.h"
 #include "data_structures/task.h"
+#include "data_structures/deadline.h"
 
 algo_results runRM(int *c, int *p, int count, int lcm);
 
