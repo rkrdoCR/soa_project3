@@ -6,7 +6,7 @@
 #include "algorithms/rate_monotonic.h"
 
 void generateBeamer(simulation_settings *formSettings);
-void generateBeamerDoc(int mcm, algo_results ar);
+void generateBeamerDoc(algo_results *ar, int tasks_count, int lcm);
 int computeLCM(int *periods, int len);
 
 #endif

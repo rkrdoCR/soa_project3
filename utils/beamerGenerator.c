@@ -1,4 +1,5 @@
 #include "beamerGenerator.h"
+#include "gtk/gtk.h"
 
 void generateBeamer(simulation_settings *formSettings)
 {
@@ -44,7 +45,20 @@ void generateBeamer(simulation_settings *formSettings)
         //algoResults[2] = runLLF();
     }
 
-    //generateBeamerDoc(mcm, algoResults);
+    generateBeamerDoc(algoResults, j, lcm);
+}
+
+void generateBeamerDoc(algo_results *ar, int tasks_count, int lcm)
+{
+    int i, k;
+    for(i = 0; i < tasks_count; i++)
+    {
+        for(k = 0; k < lcm; k++)
+        {
+            g_print(" %d |", ar[0].matrix[i][k]);
+        }
+        g_print("\n");
+    }
 }
 
 //code taken from: 

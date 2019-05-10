@@ -63,6 +63,30 @@ void push(Node **head, task d, int p)
     }
 }
 
+//Function to check if a task is in the queue
+int Exists(Node **head, task target)
+{
+    if(isEmpty(head))
+        return 0;
+
+    Node *current = (*head);
+
+    if(current != NULL && current->next == NULL)
+    {
+        if(current->data.task_number == target.task_number)
+            return 1;
+    }
+
+    while(current->next != NULL)
+    {
+        if(current->data.task_number == target.task_number)
+            return 1;
+        
+        current = current->next;
+    }
+    return 0;
+}
+
 // Function to check is list is empty
 int isEmpty(Node **head)
 {

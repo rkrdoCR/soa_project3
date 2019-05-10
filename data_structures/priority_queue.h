@@ -20,6 +20,7 @@ Node *newNode(task d, int p);
 task peek(Node **head);
 task pop(Node **head);
 void push(Node **head, task d, int p);
+int Exists(Node **head, task target);
 int isEmpty(Node **head);
 
 #endif
