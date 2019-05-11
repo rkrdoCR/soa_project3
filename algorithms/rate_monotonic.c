@@ -41,6 +41,8 @@ algo_results runRM(int *c, int *p, int count, int lcm)
     //run simulation
     simulateRM(tasks_set, j, lcm, &results);
 
+    free(tasks_set);
+
     return results;
 }
 
@@ -120,7 +122,7 @@ void simulateRM(task *tasks, int count, int lcm, algo_results *results)
     int a;
     for (a = 0; a < count; a++)
     {
-        results->matrix[a] = (int *)malloc(lcm * sizeof(int));
+        results->matrix[a] = (int *)malloc(lcm * sizeof(int *));
     }
 
     //add tasks to priority queue
@@ -274,35 +276,28 @@ void simulateRM(task *tasks, int count, int lcm, algo_results *results)
                             }
                         }
                     }
-                    // else
-                    // {
-                    //     if (k < lcm)
-                    //     {
-                    //         int x;
-                    //         for (x = 0; x < count; x++)
-                    //         {
-                    //             results->matrix[x][k] = 7;
-                    //         }
-                    //         start_col++;
-                    //         j = 0;
-                    //     }
-                    //     else
-                    //     {
-                    //         return;
-                    //     }
-                        
-                    // }
+                    else
+                    {
+                        if (k < lcm)
+                        {
+                            int x;
+                            for (x = 0; x < count; x++)
+                            {
+                                results->matrix[x][k] = 7;
+                            }
+                            start_col++;
+                            j = 0;
+                        }
+                        else
+                        {
+                            return;
+                        }                        
+                    }
                 }
             }
         }
-        else
-        {
-            if (k < lcm)
-                k++;
-            else
-            {
-                return;
-            }
-        }
     }
+    free(p_queue);
+    free(c_deadlines);
+
 }

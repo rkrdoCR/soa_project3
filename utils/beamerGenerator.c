@@ -45,6 +45,10 @@ void generateBeamer(simulation_settings *formSettings)
         //algoResults[2] = runLLF();
     }
 
+    free(c);
+    free(p);
+    //free(formSettings);
+
     generateBeamerDoc(algoResults, j, lcm);
 }
 
@@ -59,6 +63,10 @@ void generateBeamerDoc(algo_results *ar, int tasks_count, int lcm)
         }
         g_print("\n");
     }
+
+    // int c;
+    // for (c = 0; c < ta)
+    free(ar[0].matrix);
 }
 
 //code taken from: 

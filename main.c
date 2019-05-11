@@ -5,7 +5,7 @@
 
 void start_clicked(GtkWidget *widget, form_data *data)
 {   
-    simulation_settings *settings = malloc(sizeof(settings));
+    simulation_settings *settings = malloc(sizeof(settings) + 14 * sizeof(int));
 
     settings->combineAll = gtk_toggle_button_get_active(GTK_CHECK_BUTTON(data->cb_combine_all));
 
