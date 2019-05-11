@@ -14,6 +14,7 @@ algo_results runRM(int *c, int *p, int count, int lcm)
     task *tasks_set = malloc(sizeof(task) * count);
     algo_results results;
 
+    //build task set
     int i, j = 0;
     for (i = 0; i < count; i++)
     {
@@ -28,7 +29,7 @@ algo_results runRM(int *c, int *p, int count, int lcm)
     //compute upper bound (U)
     double U = computeUpperBound(j);
 
-    //check schedulability
+    //check schedulability and store it to results
     if (u <= U)
     {
         results.schedulable = 1;
@@ -122,6 +123,7 @@ void simulateRM(task *tasks, int count, int lcm, algo_results *results)
     int a;
     for (a = 0; a < count; a++)
     {
+        //allocate rows (arrays) in matrix (2d array)
         results->matrix[a] = (int *)malloc(lcm * sizeof(int *));
     }
 
@@ -153,11 +155,11 @@ void simulateRM(task *tasks, int count, int lcm, algo_results *results)
         {
             if (k > 0 && k % p == 0)
             {
-                //results->matrix[j][k] = n;
                 d.row = j;
                 d.column = k - 1;
                 d.task_number = n;
                 deadlines[b++] = d;
+                results->matrix[j][k] = 0;
             }
             else
             {
@@ -166,7 +168,7 @@ void simulateRM(task *tasks, int count, int lcm, algo_results *results)
         }
     }
 
-    //TODO: fill the matrix with tasks.
+    //simulate RM
     int start_col = 0;
     deadline *c_deadlines;
     while (1)
@@ -178,8 +180,6 @@ void simulateRM(task *tasks, int count, int lcm, algo_results *results)
             k = 0;
             for (; j < count; j++)
             {
-                //t = pop(&p_queue);
-
                 for (k = start_col; k <= (start_col + t.execTime); k++)
                 {
                     if (t.pendingExecTime > 0)
@@ -193,9 +193,9 @@ void simulateRM(task *tasks, int count, int lcm, algo_results *results)
                         break;
                     }
 
-                    //check for deadlines
+                    //check for deadlines/arriving tasks
                     c_deadlines = getDeadlines(k, &deadlines, deadlines_count);
-                    if (c_deadlines)
+                    if (c_deadlines) //expropriation: if a task arrives and the current running task still has pending job push it back to the queue
                     {
                         if (t.pendingExecTime > 0)
                         {
@@ -208,14 +208,15 @@ void simulateRM(task *tasks, int count, int lcm, algo_results *results)
                                 push(&p_queue, t, t.period);
                             }
                         }
-
+                        
+                        //push arriving task to the queue
                         int deadlinesInCol = getDeadlinesPresentInColumn(k, &deadlines, deadlines_count);
                         int y;
                         for (y = 0; y < deadlinesInCol; y++)
                         {
                             task taskToPush = tasks[c_deadlines[y].task_number - 1];
 
-                            if (Exists(&p_queue, taskToPush)) // failed deadline
+                            if (Exists(&p_queue, taskToPush)) // failed deadline: if the arriving task is already in the queue
                             {
                                 k++;
                                 j = c_deadlines[y].row;
@@ -243,9 +244,9 @@ void simulateRM(task *tasks, int count, int lcm, algo_results *results)
                     t = pop(&p_queue);
                     j = t.task_number - 2;
                 }
-                else
+                else //check for periods/deadlines
                 {
-                    //check for deadlines
+                    //expropriation: if a task arrives and the current running task still has pending job push it back to the queue
                     c_deadlines = getDeadlines(k, &deadlines, deadlines_count);
                     if (c_deadlines)
                     {
@@ -261,6 +262,7 @@ void simulateRM(task *tasks, int count, int lcm, algo_results *results)
                             }
                         }
 
+                        //push arriving task to the queue
                         int deadlinesInCol = getDeadlinesPresentInColumn(k, &deadlines, deadlines_count);
                         int y;
                         for (y = 0; y < deadlinesInCol; y++)
@@ -278,6 +280,7 @@ void simulateRM(task *tasks, int count, int lcm, algo_results *results)
                     }
                     else
                     {
+                        //no task is running (CPU free time)
                         if (k < lcm)
                         {
                             int x;

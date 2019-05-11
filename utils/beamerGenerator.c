@@ -6,6 +6,7 @@ void generateBeamer(simulation_settings *formSettings)
     int *p = malloc(sizeof(int)*6);
     int *c = malloc(sizeof(int)*6);
 
+    //get the "n" valid periods (the ones != null) 
     int i, j = 0;
     for (i = 0; i < 6; i++)
     {
@@ -16,6 +17,7 @@ void generateBeamer(simulation_settings *formSettings)
         }
     }
 
+    //get the "n" valid exec times (the ones != null)
     i, j = 0;
     for (i = 0; i < 6; i++)
     {
@@ -26,20 +28,25 @@ void generateBeamer(simulation_settings *formSettings)
         }
     } 
 
+    //compute least common multiple
     int lcm = computeLCM(p, j);
 
+    //allocate array for storing the results of the simulations
     algo_results algoResults[3];
 
+    //rate monotonic selected
     if (formSettings->rm)
     {
         algoResults[0] = runRM(c, p, j, lcm);
     }
 
+    //earliest deadline first selected
     if (formSettings->edf)
     {
         //algoResults[1] = runEDF();
     }
 
+    //least laxity first selected
     if (formSettings->llf)
     {
         //algoResults[2] = runLLF();
@@ -47,7 +54,6 @@ void generateBeamer(simulation_settings *formSettings)
 
     free(c);
     free(p);
-    //free(formSettings);
 
     generateBeamerDoc(algoResults, j, lcm);
 }
