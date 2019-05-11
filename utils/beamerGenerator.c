@@ -1,5 +1,6 @@
+#include <gtk/gtk.h>
 #include "beamerGenerator.h"
-#include "gtk/gtk.h"
+
 
 void generateBeamer(simulation_settings *formSettings)
 {

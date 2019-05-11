@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 
-#include "data_structures/task.h"
+#include "../data_structures/task.h"
 
 typedef struct node
 {

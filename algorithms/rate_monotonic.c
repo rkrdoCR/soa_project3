@@ -1,13 +1,7 @@
-#include "rate_monotonic.h"
 #include <stdio.h>
+#include "rate_monotonic.h"
 
-double computeUtilization(task *tasks, int count);
-double computeUpperBound(int count);
-int getDeadlinesPresentInColumn(int col, deadline *deadlines, int dcount);
-deadline *getDeadlines(int k, deadline *deadlines, int dcount);
-int computeDealinesCount(task *tasks, int lcm, int count);
 
-void simulateRM(task *tasks, int count, int lcm, algo_results *results);
 
 algo_results runRM(int *c, int *p, int count, int lcm)
 {

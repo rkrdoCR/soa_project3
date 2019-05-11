@@ -1,6 +1,9 @@
 {
     "files.associations": {
         "rate_monotonic.h": "c",
-        "algo_results.h": "c"
+        "algo_results.h": "c",
+        "beamergenerator.h": "c",
+        "gtk.h": "c",
+        "form_data.h": "c"
     }
 }

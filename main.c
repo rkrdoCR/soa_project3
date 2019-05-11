@@ -1,4 +1,5 @@
-#include <stdlib.h>
+//#include <stdlib.h>
+#include <gtk/gtk.h>
 #include "data_structures/form_data.h"
 #include "data_structures/settings.h"
 #include "utils/beamerGenerator.h"
