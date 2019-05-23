@@ -50,7 +50,7 @@ void generateBeamer(simulation_settings *formSettings)
     //least laxity first selected
     if (formSettings->llf)
     {
-        //algoResults[2] = runLLF();
+        algoResults[2] = runLLF(c, p, j, lcm);
     }
 
     free(c);

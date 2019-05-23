@@ -11,10 +11,12 @@
         "${fileBasenameNoExtension}",
         "${workspaceFolder}/data_structures/settings.c",
         "${workspaceFolder}/utils/beamerGenerator.c",
+        "${workspaceFolder}/utils/utilization_utils.c",
         "${workspaceFolder}/algorithms/rate_monotonic.c",
+        "${workspaceFolder}/algorithms/least_laxity_first.c",
         "${workspaceFolder}/data_structures/priority_queue.c",
         "${file}",
-        "`pkg-config", "--cflags", "--libs", "gtk+-3.0`", "-lm", "-I.", "-Wall", "-Wextra"
+        "`pkg-config", "--cflags", "--libs", "gtk+-3.0`", "-lm", "-I."
       ],
       "group": {
         "kind": "build",

@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "rate_monotonic.h"
+#include "algorithms.h"
 
 
 
@@ -39,25 +39,6 @@ algo_results runRM(int *c, int *p, int count, int lcm)
     free(tasks_set);
 
     return results;
-}
-
-double computeUtilization(task *tasks, int count)
-{
-    double result;
-
-    int i;
-    for (i = 0; i < count; i++)
-    {
-        result += (double)tasks[i].execTime / (double)tasks[i].period;
-    }
-
-    return result;
-}
-
-double computeUpperBound(int count)
-{
-    double n = (double)count;
-    return n * ((pow(2.0, 1 / n)) - 1);
 }
 
 int computeDealinesCount(task *tasks, int lcm, int count)

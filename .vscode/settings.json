@@ -4,6 +4,7 @@
         "algo_results.h": "c",
         "beamergenerator.h": "c",
         "gtk.h": "c",
-        "form_data.h": "c"
+        "form_data.h": "c",
+        "priority_queue.h": "c"
     }
 }
