@@ -18,7 +18,7 @@ algo_results runLLF(int *c, int *p, int count, int lcm)
     double u = computeUtilization(tasks_set, j);
 
     //check schedulability and store it to results
-    if (computeUtilization(tasks_set, j) <= 1)
+    if (u <= 1)
     {
         results.schedulable = 1;
     }

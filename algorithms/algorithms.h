@@ -15,6 +15,9 @@ int computeDealinesCount(task *tasks, int lcm, int count);
 void simulateRM(task *tasks, int count, int lcm, algo_results *results);
 algo_results runRM(int *c, int *p, int count, int lcm);
 
+algo_results runEDF(int *c, int *p, int count, int lcm);
+void simulateEDF(task *tasks, int count, int lcm, algo_results *results);
+
 algo_results runLLF(int *c, int *p, int count, int lcm);
 void simulateLLF(task *tasks, int count, int lcm, algo_results *results);
 

@@ -44,7 +44,7 @@ void generateBeamer(simulation_settings *formSettings)
     //earliest deadline first selected
     if (formSettings->edf)
     {
-        //algoResults[1] = runEDF();
+        algoResults[1] = runEDF(c, p, j, lcm);
     }
 
     //least laxity first selected

@@ -6,5 +6,6 @@
         "gtk.h": "c",
         "form_data.h": "c",
         "priority_queue.h": "c"
-    }
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
 }
