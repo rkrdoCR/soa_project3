@@ -52,25 +52,25 @@ void start_clicked(GtkWidget *widget, form_data *data)
 
     if ((settings->rm + settings->edf + settings->llf) == 0)
     {
-        show_error("\n Debe seleccionar al menos un algoritmo");
+        show_error("\n You must select at least one algorithm");
         return;
     }
 
     if (no_number(e1_text) || no_number(e2_text) || no_number(e3_text) || no_number(e4_text) || no_number(e5_text) || no_number(e6_text) || no_number(p1_text) || no_number(p2_text) || no_number(p3_text) || no_number(p4_text) || no_number(p5_text) || no_number(p6_text))
     {
-        show_error("\n Todos los campos usados deben ser númericos");
+        show_error("\n All fields used must be numeric");
         return;
     }
 
     if (strlen(e1_text) == 0)
     {
-        show_error("\n El tiempo de ejecución 1 no puede estar vacio");
+        show_error("\n The execution time #1 can not be empty");
         return;
     }
 
     if (strlen(e1_text) > 0 && strlen(p1_text) == 0)
     {
-        show_error("\n El periodo no puede estar vacio si se lleno el tiempo de ejecución");
+        show_error("\n The period can not be empty if the execution time is full");
         return;
     }
 
@@ -92,13 +92,13 @@ void start_clicked(GtkWidget *widget, form_data *data)
     {
         if (settings->executionTimes[i] > settings->periods[i])
         {
-            show_error("\n El periodo no puede ser menor a tiempo de ejecución");
+            show_error("\n The period can not be less than the execution time");
             return;
         }
 
         if (settings->periods[i] > 0 && settings->executionTimes[i] == 0)
         {
-            show_error("\n El tiempo de ejecución no puede estar vacío si se lleno el campo de periodo");
+            show_error("\n The execution time can not be empty if the period field is full");
             return;
         }
     }
