@@ -8,6 +8,8 @@
 #include "../data_structures/deadline.h"
 #include "../utils/utilization_utils.h"
 
+#define MAX_U_EDF 1
+
 int getDeadlinesPresentInColumn(int col, deadline *deadlines, int dcount);
 deadline *getDeadlines(int k, deadline *deadlines, int dcount);
 int computeDealinesCount(task *tasks, int lcm, int count);

@@ -37,7 +37,7 @@ algo_results runRM(int *c, int *p, int count, int lcm)
     simulateRM(tasks_set, j, lcm, &results);
 
     free(tasks_set);
-
+    results.selected = 1;
     return results;
 }
 

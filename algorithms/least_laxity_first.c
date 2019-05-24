@@ -31,7 +31,7 @@ algo_results runLLF(int *c, int *p, int count, int lcm)
     simulateLLF(tasks_set, j, lcm, &results);
 
     free(tasks_set);
-
+    results.selected = 1;
     return results;
 }
 

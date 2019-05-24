@@ -1,17 +1,16 @@
 #include <gtk/gtk.h>
 #include "beamerGenerator.h"
 
-
 void generateBeamer(simulation_settings *formSettings)
 {
-    int *p = malloc(sizeof(int)*6);
-    int *c = malloc(sizeof(int)*6);
+    int *p = malloc(sizeof(int) * 6);
+    int *c = malloc(sizeof(int) * 6);
 
-    //get the "n" valid periods (the ones != null) 
+    //get the "n" valid periods (the ones != null)
     int i, j = 0;
     for (i = 0; i < 6; i++)
     {
-        if(formSettings->periods[i] > 0)
+        if (formSettings->periods[i] > 0)
         {
             p[j] = formSettings->periods[i];
             j++;
@@ -22,12 +21,12 @@ void generateBeamer(simulation_settings *formSettings)
     i, j = 0;
     for (i = 0; i < 6; i++)
     {
-        if(formSettings->executionTimes[i] > 0)
+        if (formSettings->executionTimes[i] > 0)
         {
             c[j] = formSettings->executionTimes[i];
             j++;
         }
-    } 
+    }
 
     //compute least common multiple
     int lcm = computeLCM(p, j);
@@ -36,19 +35,19 @@ void generateBeamer(simulation_settings *formSettings)
     algo_results algoResults[3];
 
     //rate monotonic selected
-    if (formSettings->rm)
+    if (formSettings->rm == 1)
     {
         algoResults[0] = runRM(c, p, j, lcm);
     }
 
     //earliest deadline first selected
-    if (formSettings->edf)
+    if (formSettings->edf == 1)
     {
         algoResults[1] = runEDF(c, p, j, lcm);
     }
 
     //least laxity first selected
-    if (formSettings->llf)
+    if (formSettings->llf == 1)
     {
         algoResults[2] = runLLF(c, p, j, lcm);
     }
@@ -61,22 +60,28 @@ void generateBeamer(simulation_settings *formSettings)
 
 void generateBeamerDoc(algo_results *ar, int tasks_count, int lcm)
 {
-    int i, k;
-    for(i = 0; i < tasks_count; i++)
+    int i, j, k;
+    for (k = 0; k < 3; k++)
     {
-        for(k = 0; k < lcm; k++)
+        if (ar[k].selected == 1)
         {
-            g_print(" %d |", ar[0].matrix[i][k]);
-        }
-        g_print("\n");
-    }
+            for (i = 0; i < tasks_count; i++)
+            {
+                for (j = 0; j < lcm; j++)
+                {
+                    g_print(" %d |", ar[k].matrix[i][j]);
+                }
+                g_print("\n");
+            }
 
-    // int c;
-    // for (c = 0; c < ta)
-    free(ar[0].matrix);
+            // int c;
+            // for (c = 0; c < ta)
+            free(ar[k].matrix);
+        }
+    }
 }
 
-//code taken from: 
+//code taken from:
 int computeLCM(int *p, int len)
 {
     int periods[len];
