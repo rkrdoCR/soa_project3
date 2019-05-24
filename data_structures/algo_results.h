@@ -5,6 +5,7 @@ typedef struct
 {
     int schedulable;
     int **matrix;
+    int selected;
 
 } algo_results;
 
