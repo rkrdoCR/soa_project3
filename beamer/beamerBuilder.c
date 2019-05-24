@@ -1,6 +1,7 @@
 //
 #include "beamerBuilder.h"
 
+
 void removeNewLine(char *token, int tokenLength){
     for(int i=0; i<tokenLength;i++){
         if(token[i] == '\n'){
@@ -14,8 +15,16 @@ void copySnippet(char *token, char *snippet){
     FILE *snippetFile;
     char snippetCh;
     int index=0;
+    char full_path[100];
 
-    snippetFile = fopen(token, "r");
+    //add path to token
+    strcpy(full_path,"tmpfiles/");
+    strcat(full_path,token);
+
+    printf("This is full path in copySnippet: %s \n", full_path);
+
+    snippetFile = fopen(full_path, "r");
+    //snippetFile = fopen(token, "r");
     printf("copy Snippet i being reached");
     while ((snippetCh = fgetc(snippetFile)) != EOF){
         //strcat(snippet, &snippetCh);
@@ -32,8 +41,8 @@ int readTemplate(){
     char token[200] = "";
     char buffer[1000] = "";
 
-    source=fopen("template.tex","r+");
-    target=fopen("template_final.tex", "w");
+    source=fopen("tmpfiles/template.tex","r+");
+    target=fopen("tmpfiles/template_final.tex", "w");
 
     if(source==NULL || target==NULL)
     {
@@ -81,7 +90,7 @@ int readTemplate(){
 
 
 int copyTemplateToTempBash(){
-    int status = system("cp assets/template.tex .");
+    int status = system("cp assets/* tmpfiles");
     if (status == 0){
         printf("Template copy was made successfully \n");
     }else{
@@ -91,7 +100,59 @@ int copyTemplateToTempBash(){
 
 
 void compileBeamer(){
-    system("pdflatex -output-directory tmpfiles/ template_final.tex");
+    system("pdflatex -interaction nonstopmode -output-directory tmpfiles/ tmpfiles/template_final.tex >/dev/null");
+}
+
+
+void createTabular(algo_results *ar, int tasks_count, int lcm){
+    FILE *target;
+    target=fopen("tmpfiles/tabular", "w");
+    char buffer[1000]="";
+    int i,j=0;
+
+    strcat(buffer, "\begin{table}[]\n");
+    strcat(buffer, "\begin{tabular}");
+    strcat(buffer, "{");
+    for(i=0; i<lcm;i++){
+        strcat(buffer,"|l");
+    }
+
+    for(i=0; i<tasks_count;i++){
+        for(j=0;j<lcm;j++){
+            switch(ar[0].matrix[i][j]){
+                case 0:
+                strcat(buffer," &");  
+                break;
+                case 1:
+                strcat(buffer," \\cellcolor[HTML]{6434FC} &");
+                break;
+                case 2:
+                strcat(buffer," \\cellcolor[HTML]{F56B00} &");
+                break;
+                case 3:
+                strcat(buffer," \\cellcolor[HTML]{F8FF00} &");
+                break;
+                case 4:
+                strcat(buffer," \\cellcolor[HTML]{003532} &");
+                break;
+                case 5:
+                strcat(buffer," \\cellcolor[HTML]{94FF99} &");
+                break;
+                case 6:
+                strcat(buffer," \\cellcolor[HTML]{6434FC} &");
+                break;
+            }
+            if(j== (lcm-1)){
+               strcat(buffer,"\\\\ \\hline");  
+            }
+        }
+    }
+
+    strcat(buffer, "|}\n");
+    strcat(buffer, "\\hline\n");
+    strcat(buffer, "\end{tabular}\n");
+    strcat(buffer, "\end{table}");
+
 }
 
 
