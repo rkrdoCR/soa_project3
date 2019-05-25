@@ -24,14 +24,18 @@ void copySnippet(char *token, char *snippet){
     printf("This is full path in copySnippet: %s \n", full_path);
 
     snippetFile = fopen(full_path, "r");
-    //snippetFile = fopen(token, "r");
-    printf("copy Snippet i being reached");
-    while ((snippetCh = fgetc(snippetFile)) != EOF){
-        //strcat(snippet, &snippetCh);
-        snippet[index]=snippetCh;
-        index++;
+    if(snippetFile == NULL){
+        printf("File for token does not exist");
+    }else{
+        printf("copy Snippet i being reached");
+        while ((snippetCh = fgetc(snippetFile)) != EOF){
+            //strcat(snippet, &snippetCh);
+            snippet[index]=snippetCh;
+            index++;
+        }
+        printf("The snippet is: %s", snippet);
     }
-    printf("The snippet is: %s", snippet);
+
     fclose(snippetFile);
 }
 
@@ -114,9 +118,12 @@ void createTabular(algo_results *ar, int tasks_count, int lcm, char *tabular_nam
     target=fopen(full_path, "w");
     char buffer[1000]="";
     int i,j=0;
-    char str_i[10];
+    char str_i[100];
+
+    printf("Creating this tabular: %s", tabular_name);
 
     strcat(buffer, "\\begin{table}[]\n");
+    strcat(buffer, "\\small\\addtolength{\\tabcolsep}{-5pt}\n");
     strcat(buffer, "\\begin{tabular}");
     strcat(buffer, "{");
     for(i=0; i<lcm+1;i++){
@@ -135,12 +142,13 @@ void createTabular(algo_results *ar, int tasks_count, int lcm, char *tabular_nam
         }
         strcat(buffer,"&"); 
     }
+    printf("Done with table header");
     strcat(buffer," \\hline\n"); 
 
     for(i=0; i<tasks_count;i++){
         for(j=0;j<lcm+1;j++){
             if(j==0){
-                strcat(buffer,"Task : ");
+                strcat(buffer,"T: ");
                 sprintf(str_i,"%d",i);
                 strcat(buffer, str_i);
                 strcat(buffer," &");
@@ -180,6 +188,7 @@ void createTabular(algo_results *ar, int tasks_count, int lcm, char *tabular_nam
             }
         }
     }
+    printf("Done with table body");
 
     //strcat(buffer, "\\hline\n");
     strcat(buffer, "\\end{tabular}\n");
@@ -187,11 +196,13 @@ void createTabular(algo_results *ar, int tasks_count, int lcm, char *tabular_nam
 
     fprintf(target, "%s", buffer);
     fclose(target);
-
+    printf("file closed successfully");
 }
 
 void createBeamer(algo_results *ar, int tasks_count, int lcm){
     char tabular_name[10];
+    copyTemplateToTempBash();
+
     if(ar[0].selected==1){
         strcpy(tabular_name,"tabular1");
         createTabular(&ar[0], tasks_count, lcm, tabular_name);
@@ -202,14 +213,10 @@ void createBeamer(algo_results *ar, int tasks_count, int lcm){
         createTabular(&ar[1], tasks_count, lcm, tabular_name);
     }
 
-
-    // if(ar[2].selected==1){
-    //     strcpy(tabular_name,"tabular3");
-    //     createTabular(&ar[2], tasks_count, lcm, tabular_name);
-    // }
-
-    
-    copyTemplateToTempBash();
+    if(ar[2].selected==1){
+        strcpy(tabular_name,"tabular3");
+        createTabular(&ar[2], tasks_count, lcm, tabular_name);
+    }
 
     readTemplate();
 
