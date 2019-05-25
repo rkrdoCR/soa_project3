@@ -109,49 +109,73 @@ void createTabular(algo_results *ar, int tasks_count, int lcm){
     target=fopen("tmpfiles/tabular", "w");
     char buffer[1000]="";
     int i,j=0;
+    char str_i[10];
 
-    strcat(buffer, "\begin{table}[]\n");
-    strcat(buffer, "\begin{tabular}");
+    strcat(buffer, "\\begin{table}[]\n");
+    strcat(buffer, "\\begin{tabular}");
     strcat(buffer, "{");
-    for(i=0; i<lcm;i++){
+    for(i=0; i<lcm+1;i++){
         strcat(buffer,"|l");
     }
+    strcat(buffer, "|}\n");
+    strcat(buffer, "\\hline\n");
+
+    for(i=0;i<lcm+1;i++){
+        if(i==0){
+            strcat(buffer," ");
+        }else{
+            sprintf(str_i,"%d",i);
+            printf("stri_i %s", str_i);
+            strcat(buffer, str_i);
+        }
+        strcat(buffer,"&"); 
+    }
+    strcat(buffer," \\hline\n"); 
 
     for(i=0; i<tasks_count;i++){
-        for(j=0;j<lcm;j++){
-            switch(ar[0].matrix[i][j]){
-                case 0:
-                strcat(buffer," &");  
-                break;
-                case 1:
-                strcat(buffer," \\cellcolor[HTML]{6434FC} &");
-                break;
-                case 2:
-                strcat(buffer," \\cellcolor[HTML]{F56B00} &");
-                break;
-                case 3:
-                strcat(buffer," \\cellcolor[HTML]{F8FF00} &");
-                break;
-                case 4:
-                strcat(buffer," \\cellcolor[HTML]{003532} &");
-                break;
-                case 5:
-                strcat(buffer," \\cellcolor[HTML]{94FF99} &");
-                break;
-                case 6:
-                strcat(buffer," \\cellcolor[HTML]{6434FC} &");
-                break;
-            }
-            if(j== (lcm-1)){
-               strcat(buffer,"\\\\ \\hline");  
+        for(j=0;j<lcm+1;j++){
+            if(j==0){
+                strcat(buffer,"Task : ");
+                sprintf(str_i,"%d",i);
+                strcat(buffer, str_i);
+                strcat(buffer," &");
+            }else{
+                switch(ar->matrix[i][j-1]){
+                    case 0:
+                    strcat(buffer," &");  
+                    break;
+                    case 1:
+                    strcat(buffer," \\cellcolor[HTML]{6434FC} &");
+                    break;
+                    case 2:
+                    strcat(buffer," \\cellcolor[HTML]{F56B00} &");
+                    break;
+                    case 3:
+                    strcat(buffer," \\cellcolor[HTML]{F8FF00} &");
+                    break;
+                    case 4:
+                    strcat(buffer," \\cellcolor[HTML]{003532} &");
+                    break;
+                    case 5:
+                    strcat(buffer," \\cellcolor[HTML]{94FF99} &");
+                    break;
+                    case 6:
+                    strcat(buffer," \\cellcolor[HTML]{6434FC} &");
+                    break;
+                }
+                if(j== (lcm)){
+                    strcat(buffer," \\hline\n");  
+                }
             }
         }
     }
 
-    strcat(buffer, "|}\n");
-    strcat(buffer, "\\hline\n");
-    strcat(buffer, "\end{tabular}\n");
-    strcat(buffer, "\end{table}");
+    //strcat(buffer, "\\hline\n");
+    strcat(buffer, "\\end{tabular}\n");
+    strcat(buffer, "\\end{table}");
+
+    fprintf(target, "%s", buffer);
+    fclose(target);
 
 }
 

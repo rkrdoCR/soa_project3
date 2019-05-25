@@ -15,7 +15,7 @@
 %	PACKAGES AND THEMES
 %----------------------------------------------------------------------------------------
 
-\documentclass{beamer}
+\documentclass[xcolor=table]{beamer}
 
 \mode<presentation> {
 
@@ -76,6 +76,7 @@
 \setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
 }
 
+%\usepackage[table,xcdraw]{xcolor}
 \usepackage{graphicx} % Allows including images
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
 %\usepackage {tikz}
@@ -95,14 +96,10 @@
 %	TITLE PAGE
 %----------------------------------------------------------------------------------------
 
-%#test_token_1
-%1
-%2
-%3
-\title{ial Applications of the GCP data} % The short title appears at the bottom of every slide, the full title is only on the title page
+\title[Proyecto 3: Simulacion de Algoritmos de scheduling]{ial Applications of the GCP data} % The short title appears at the bottom of every slide, the full title is only on the title page
 
-\author{Peter W Chacha} % Your name
-\institute[The World Bank Group] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
+\author{Marco, Ricardo, Christopher, Randall, Renan} % Your name
+\institute[Maestria en Ciencias de la Computacion] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
 {
 The World Bank Group\\ % Your institution for the title page
 \medskip
@@ -127,36 +124,20 @@ The World Bank Group\\ % Your institution for the title page
 %------------------------------------------------
 
 \section{Motivation for the GCP}
-\begin{frame}{Estimating GDP is an enormous task-doing so at county levels is even tougher:}
-    \begin{itemize}
-        \item Due to data challenges. This means that GCP is the best available measure of aggregate activity at the county but not a perfect measure;
-        \item Prevalence of informalities. Many transactions or activities in the economy, including many that go through the market are never recorded officially; and 
-        \item Difficulties in attributing economic activity to a specific county unit. It gets worse when we start to account for cross-county transactions.
-    \end{itemize}
-
+\begin{frame}{EDF results}
 #tabular
-
-\end{frame}
-\section{Why is this important for the counties?}
-\begin{frame}{There is great interest at counties to know the relative size of their economies.}
-    Does the Mt Kenya Region contribute 60\% of Kenya's GDP?
- \begin{figure}[H]
-  \centering
-  \includegraphics[width=70mm]{cekeb.png}
- \end{figure}
 \end{frame}
 
-\begin{frame}{What are the potential applications}
+\begin{frame}{RM results}
+
+\end{frame}
+
+\begin{frame}{LLF results}
 There are numerous applications of this novel data set, including:
-  \begin{itemize}
-        \item GCP is an acceptable proxy for county's tax base-that could be leveraged for Own Source Revenue (OSR) mobilization;
-        \item GCP is a great indicator for monitoring progress (changes in growth over-time) across counties and would potentially corroborate other HDI; 
-        \item The national government could use GCP to quantify the dividends from fiscal reforms; and 
-        \item Finally, GCP could be used to identify counties that requires more focus for inclusive growth and pro-poor policies. 
-    \end{itemize}
 \end{frame}
 
 \section{What are the key highlights from the GCP report?}
+
 \begin{frame}{There is significant differences in the size of the economy across counties}
 \begin{itemize}
         \item Urban counties-Nairobi(21.7\%); Nakuru(6.1\%), and Mombasa (4.7\%) vs. Isiolo(0.2\%), Samburu(0.3\%), and Lamu(0.4\%);
@@ -165,28 +146,7 @@ There are numerous applications of this novel data set, including:
         \item Only about 25\% of the counties have their GCP per capita above the national GDP per capita-showing great disparities but also what devolution brings on the table to tackle this. 
     \end{itemize}
 \end{frame}
-\section{Some problems with the GCP estimation}
-\begin{frame}{What are the user be aware warnings?}
-    \begin{itemize}
-        \item Non-market production-It is difficult to measure or estimate the value of goods and services that are not sold in a market.
-        \item Unrecorded activities both illegal and legal.
-        \item Frequent revisions-preliminary estimates should always be used with caution.
-        \item GCP is not a good measure of well being due to lack of accounting for externalities.
-        \item GCP tells nothing about distribution of income within the county.
-    \end{itemize}
-\end{frame}
 
-\section{My Takeaways}
-\begin{frame}{My Takeaways: What gets measured gets done}
-  \begin{itemize}
-    \item Good quality data not only measures progress, but it also inspires it.
-    \item The publication of the GCP data has plugged an important data gap to track progress of devolution in Kenya. 
- \end{itemize}
-\end{frame}
-
-\begin{frame}
-\Huge{\centerline{The End}}
-\end{frame}
 
 \end{document}
 
