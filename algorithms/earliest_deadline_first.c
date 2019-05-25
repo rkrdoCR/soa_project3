@@ -1,4 +1,19 @@
 #include "algorithms.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int period_LCM;
+
+float f;
+
+int WCET[6];
+int deadlines[6];
+int period[6];
+
+/* int WCET[3] = {1,2,6}; // execution times
+    int deadlines[3] = {5,8,19}; // deadliness
+    int period[3] = {5,8,19}; // periods (equal to deadliness)*/
 
 algo_results runEDF(int *c, int *p, int count, int lcm)
 {
@@ -35,10 +50,147 @@ algo_results runEDF(int *c, int *p, int count, int lcm)
     return results;
 }
 
-void simulateEDF(task *tasks, int count, int lcm, algo_results *results)
+//--------------------------------------
+void get_period_LCM(int no_of_tasks) // computes LCM of periods
 {
-    int c = 1, task_row = 0, column = 0;
-    task t;
+    int lcm[no_of_tasks];
+    for (int i = 0; i < no_of_tasks; i++)
+    {
+        lcm[i] = period[i]; // initialize lcm array
+    }
+    int h = 0;
+    int lowest_value;
+    int lowest_value_index;
+    while (h == 0)
+    {
+        h = 1;
+        lowest_value = lcm[0];
+        lowest_value_index = 0;
+        for (int i = 0; i < no_of_tasks; i++)
+        {
+            if (lowest_value != lcm[i])
+            {
+                h = 0;
+                if (lowest_value > lcm[i]) // if current global LCM greater than LCM of task
+                {
+                    lowest_value = lcm[i];
+                    lowest_value_index = i; // update task index whose period was used
+                }
+            }
+        }
+        if (h == 0) // LCM changed; update it
+        {
+            lcm[lowest_value_index] = lowest_value + period[lowest_value_index];
+        }
+    }
+    period_LCM = 760; //lcm[0];
+    printf("\nSchedulability will be evaluated over the LCM of periods which is %d\n", period_LCM);
+}
+
+float schedulability(int no_of_tasks)
+{
+    float utilization = 0;
+    float x, y;
+    printf("The CPU utilization is: ");
+    for (int i = 0; i < no_of_tasks; i++) // compute utilization as sum of individual task utilizations (Ci/Ti)
+    {
+        x = WCET[i];
+        y = period[i];
+        utilization = utilization + x / y;
+        printf("(%d/%d) ", WCET[i], period[i]);
+        if (i == no_of_tasks - 1)
+            break;
+        else
+            printf("+ ");
+    }
+    printf(" = %f", utilization);
+    return utilization;
+}
+
+void schedule(int no_of_tasks, algo_results *results, int EXE_LEN)
+{ // computes EDF schedule
+    int earliest_deadlines;
+    int earliest_deadlines_index;
+    int edf_schedule[period_LCM];
+    int cycles_left[no_of_tasks];
+    int next_deadlines[no_of_tasks];
+    int cycles_completed[no_of_tasks];
+
+    for (int i = 0; i < no_of_tasks; i++)
+    {
+        next_deadlines[i] = deadlines[i]; // next deadlines of task
+        cycles_left[i] = WCET[i];         // time steps remaining for task execution
+        cycles_completed[i] = 0;          // time steps completed
+    }
+    //for (i = 0; i < period_LCM; i++)
+    for (int i = 0; i < EXE_LEN; i++)
+    {
+        printf("(%d,%d) : ", i, i + 1); // print current time slot
+        earliest_deadlines = period_LCM;
+        earliest_deadlines_index = -1;
+        for (int j = 0; j < no_of_tasks; j++) // check all tasks
+        {
+            if (cycles_left[j] > 0) // if task has not executed completely
+            {
+                if (earliest_deadlines > next_deadlines[j]) // if earliest deadlines beyond current task deadlines
+                {
+                    earliest_deadlines = next_deadlines[j]; // schedule current task
+                    earliest_deadlines_index = j;
+                }
+            }
+        }
+        // printf("     [Task executed = %d]\n",earliest_deadlines_index); // current task assigned to time slot
+        printf("     [Task executed = %d]\n", (earliest_deadlines_index + 1)); // current task assigned to time slot
+        if (earliest_deadlines_index >= 0)
+        {
+            results->matrix[earliest_deadlines_index][i] = (earliest_deadlines_index + 1);
+        }
+
+        cycles_left[earliest_deadlines_index]--; // decrement task's execution cycles left
+
+        for (int j = 0; j < no_of_tasks; j++)
+        {
+            if (cycles_completed[j] == (period[j] - 1)) // if task is approaching period
+            {
+                next_deadlines[j] = deadlines[j]; // set deadlines for it
+                cycles_left[j] = WCET[j];         // load cycles left for execution with WCET
+                cycles_completed[j] = 0;          // reset cycles completed
+            }
+            else
+            {
+                if (next_deadlines[j] > 0) // if time remaining until next deadlines
+                {
+                    next_deadlines[j]--; // decrement it by one time slot
+                }
+                else
+                {
+                    if (cycles_left[j] > 0) // if deadlines arrived && non-zero cycles left to be executed
+                    {
+                        printf("\n the process %d cannot be completed to capacity", j); // cannot complete task
+                    }
+                }
+                cycles_completed[j]++; // increment cycles completed
+            }
+        }
+    }
+}
+
+///---------------------------------
+
+void simulateEDF(task *task_raw, int count, int lcm, algo_results *results)
+{
+   printf("\n Earliest Deadline First");
+#define no_of_tasks (count)
+
+    //int WCET[no_of_tasks] = {1,2,6}; // execution times
+    //int deadlines[no_of_tasks] = {5,8,19}; // deadliness
+    //int period[no_of_tasks] = {5,8,19}; // periods (equal to deadliness)
+
+    /* WCET[count];
+    deadlines[count];
+    period[count];*/
+
+    //build task set
 
     //allocate matrix
     results->matrix = (int **)malloc(count * sizeof(int *));
@@ -49,180 +201,58 @@ void simulateEDF(task *tasks, int count, int lcm, algo_results *results)
         results->matrix[a] = (int *)malloc(lcm * sizeof(int *));
     }
 
-    //add tasks to priority queue
-    tasks[0].task_number = c;
-    tasks[0].pendingExecTime = tasks[0].execTime;
-    Node *p_queue = newNode(tasks[0], tasks[0].execTime);
-    int i;
-    for (i = 1; i < count; i++)
+    //prebuild matrix
+    for (int i = 0; i < count; i++)
     {
-        tasks[i].task_number = ++c;
-        tasks[i].pendingExecTime = tasks[i].execTime;
-        push(&p_queue, tasks[i], tasks[i].execTime);
-    }
 
-    //prebuild matrix (blanks and periods)
-    int j, k;
-    int b = 0;
-    int deadlines_count = computeDealinesCount(tasks, lcm, count);
-    deadline deadlines[deadlines_count];
-    for (j = 0; j < count; j++)
-    {
-        int p = tasks[j].period;
-        int n = tasks[j].task_number;
-
-        deadline d;
-
-        for (k = 0; k < lcm; k++)
+        for (int j = 0; j < lcm; j++)
         {
-            if (k > 0 && k % p == 0)
-            {
-                d.row = j;
-                d.column = k - 1;
-                d.task_number = n;
-                deadlines[b++] = d;
-                results->matrix[j][k] = 0;
-            }
-            else
-            {
-                results->matrix[j][k] = 0;
-            }
+            results->matrix[i][j] = 0;
         }
     }
 
-    //simulate EDF
-    int start_col = 0;
-    deadline *c_deadlines;
-    while (1)
+ 
+    for (int i = 0; i < count; i++)
     {
-        if (!isEmpty(&p_queue))
-        {
-            task t = pop(&p_queue);
-            j = t.task_number - 1;
-            k = 0;
-            for (; j < count; j++)
-            {
-                for (k = start_col; k <= (start_col + t.execTime); k++)
-                {
-                    if (t.pendingExecTime > 0)
-                    {
-                        results->matrix[j][k] = t.task_number;
-                        t.pendingExecTime--;
-                        start_col++;
-                    }
-                    else
-                    {
-                        break;
-                    }
-
-                    //check for deadlines/arriving tasks
-                    c_deadlines = getDeadlines(k, &deadlines, deadlines_count);
-                    if (c_deadlines) //expropriation: if a task arrives and the current running task still has pending job push it back to the queue
-                    {
-                        if (t.pendingExecTime > 0)
-                        {   //now we use pendingExecTime
-                            if (isEmpty(&p_queue))
-                            {
-                                p_queue = newNode(t, t.pendingExecTime);
-                            }
-                            else
-                            {
-                                push(&p_queue, t, t.pendingExecTime);
-                            }
-                        }
-                        
-                        //push arriving task to the queue
-                        int deadlinesInCol = getDeadlinesPresentInColumn(k, &deadlines, deadlines_count);
-                        int y;
-                        for (y = 0; y < deadlinesInCol; y++)
-                        {
-                            task taskToPush = tasks[c_deadlines[y].task_number - 1];
-
-                            if (Exists(&p_queue, taskToPush)) // failed deadline: if the arriving task is already in the queue
-                            {
-                                k++;
-                                j = c_deadlines[y].row;
-
-                                results->matrix[j][k] = 13; //13 means failed deadline
-                                return;
-                            }
-
-                            if (isEmpty(&p_queue))
-                            {
-                                p_queue = newNode(taskToPush, taskToPush.pendingExecTime);
-                            }
-                            else
-                            {
-                                push(&p_queue, taskToPush, taskToPush.pendingExecTime);
-                            }
-                        }
-
-                        break;
-                    }
-                }
-
-                if (!isEmpty(&p_queue))
-                {
-                    t = pop(&p_queue);
-                    j = t.task_number - 2;
-                }
-                else //check for periods/deadlines
-                {
-                    //expropriation: if a task arrives and the current running task still has pending job push it back to the queue
-                    c_deadlines = getDeadlines(k, &deadlines, deadlines_count);
-                    if (c_deadlines)
-                    {
-                        if (t.pendingExecTime > 0)
-                        {
-                            if (isEmpty(&p_queue))
-                            {
-                                p_queue = newNode(t, t.pendingExecTime);
-                            }
-                            else
-                            {
-                                push(&p_queue, t, t.pendingExecTime);
-                            }
-                        }
-
-                        //push arriving task to the queue
-                        int deadlinesInCol = getDeadlinesPresentInColumn(k, &deadlines, deadlines_count);
-                        int y;
-                        for (y = 0; y < deadlinesInCol; y++)
-                        {
-                            task taskToPush = tasks[c_deadlines[y].task_number - 1];
-                            if (isEmpty(&p_queue))
-                            {
-                                p_queue = newNode(taskToPush, taskToPush.pendingExecTime);
-                            }
-                            else
-                            {
-                                push(&p_queue, taskToPush, taskToPush.pendingExecTime);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        //no task is running (CPU free time)
-                        if (k < lcm)
-                        {
-                            int x;
-                            for (x = 0; x < count; x++)
-                            {
-                                results->matrix[x][k] = 7;
-                            }
-                            start_col++;
-                            j = 0;
-                        }
-                        else
-                        {
-                            return;
-                        }                        
-                    }
-                }
-            }
-        }
+        WCET[i] = task_raw[i].execTime;
+        deadlines[i] = task_raw[i].period;
+        period[i] = task_raw[i].period;
     }
-    free(p_queue);
-    free(c_deadlines);
-    
+
+    printf("Task parameters:\n"); // print task parameters
+    printf("Task_i | Ci, Di, Ti\n");
+    printf("-------------------\n");
+    for (int i = 0; i < count; i++)
+    {
+        printf("Task_%d | %d,  %d,  %d\n", i, WCET[i], deadlines[i], period[i]);
+    }
+
+    int exec_time = 0;
+    for (int i = 0; i < count; i++)
+    {
+        exec_time += period[i];
+    }
+
+ 
+#define EXE_LEN ((exec_time - 1))
+
+    //----------
+
+    get_period_LCM(count);
+    printf("\nSchedulability Test:\n"); // commence schedulability test
+    f = schedulability(count);
+    if (f <= 1)
+    {
+        printf("\nThe system is schedulable because the CPU utilization %f <= 1", f);
+        printf("\n\nEDF Schedule\n");
+        printf("\nTime slice      Task executed\n");
+        schedule(count, results, EXE_LEN);
+    }
+    else
+    {
+        printf("\nThe system is not schedulable because the CPU utilization %f > 1\n", f);
+    }
+    return 0;
+
+    //------------
 }
