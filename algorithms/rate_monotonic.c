@@ -23,9 +23,11 @@ algo_results runRM(int *c, int *p, int count, int lcm)
 
     //compute utilization (u)
     double u = computeUtilization(tasks_set, j);
+    results.u = u;
 
     //compute upper bound (U)
     double U = computeUpperBound(j);
+    results.U = U;
 
     //check schedulability and store it to results
     if (u <= U)

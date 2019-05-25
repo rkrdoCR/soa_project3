@@ -8,6 +8,8 @@ typedef struct
     int schedulable;
     int **matrix;
     int selected;
+    double u;
+    double U;
     task *tasks_set;
 } algo_results;
 

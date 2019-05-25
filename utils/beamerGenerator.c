@@ -62,11 +62,17 @@ void generateBeamer(simulation_settings *formSettings)
 
 void generateBeamerDoc(algo_results *ar, int tasks_count, int lcm)
 {
+    g_print("Schedulability Test Results: u = %f --- U = %f\n\n", ar->u, ar->U);
+
+    g_print("Tasks info \n");
+
     int a;
     for(a = 0; a < tasks_count; a++)
     {
         g_print("%d    %d\n", ar->tasks_set[a].execTime, ar->tasks_set[a].period);
     }
+
+    g_print("\nTasks set simulation \n\n");
 
     int i, j, k;
     for (k = 0; k < 3; k++)
