@@ -16,6 +16,7 @@
         "${workspaceFolder}/algorithms/least_laxity_first.c",
         "${workspaceFolder}/algorithms/earliest_deadline_first.c",
         "${workspaceFolder}/data_structures/priority_queue.c",
+        "${workspaceFolder}/beamer/beamerBuilder.c",
         "${file}",
         "`pkg-config", "--cflags", "--libs", "gtk+-3.0`", "-lm", "-I."
       ],

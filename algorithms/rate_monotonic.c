@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include "algorithms.h"
 
-
-
 algo_results runRM(int *c, int *p, int count, int lcm)
 {
     task *tasks_set = malloc(sizeof(task) * count);
@@ -183,7 +181,7 @@ void simulateRM(task *tasks, int count, int lcm, algo_results *results)
                                 push(&p_queue, t, t.period);
                             }
                         }
-                        
+
                         //push arriving task to the queue
                         int deadlinesInCol = getDeadlinesPresentInColumn(k, &deadlines, deadlines_count);
                         int y;
@@ -221,6 +219,22 @@ void simulateRM(task *tasks, int count, int lcm, algo_results *results)
                 }
                 else //check for periods/deadlines
                 {
+                    //no task is running (CPU free time)
+                    if (k < lcm)
+                    {
+                        int x;
+                        for (x = 0; x < count; x++)
+                        {
+                            results->matrix[x][k] = 7;
+                        }
+                        start_col++;
+                        j = 0;
+                    }
+                    else
+                    {
+                        return;
+                    }
+
                     //expropriation: if a task arrives and the current running task still has pending job push it back to the queue
                     c_deadlines = getDeadlines(k, &deadlines, deadlines_count);
                     if (c_deadlines)
@@ -253,29 +267,10 @@ void simulateRM(task *tasks, int count, int lcm, algo_results *results)
                             }
                         }
                     }
-                    else
-                    {
-                        //no task is running (CPU free time)
-                        if (k < lcm)
-                        {
-                            int x;
-                            for (x = 0; x < count; x++)
-                            {
-                                results->matrix[x][k] = 7;
-                            }
-                            start_col++;
-                            j = 0;
-                        }
-                        else
-                        {
-                            return;
-                        }                        
-                    }
                 }
             }
         }
     }
     free(p_queue);
     free(c_deadlines);
-
 }
