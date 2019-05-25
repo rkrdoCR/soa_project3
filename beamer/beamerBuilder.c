@@ -104,9 +104,13 @@ void compileBeamer(){
 }
 
 
-void createTabular(algo_results *ar, int tasks_count, int lcm){
+void createTabular(algo_results *ar, int tasks_count, int lcm, char *tabular_name){
     FILE *target;
-    target=fopen("tmpfiles/tabular", "w");
+    char full_path[100];
+    strcpy(full_path,"tmpfiles/");
+    strcat(full_path,tabular_name);
+
+    target=fopen(full_path, "w");
     char buffer[1000]="";
     int i,j=0;
     char str_i[10];
@@ -178,5 +182,33 @@ void createTabular(algo_results *ar, int tasks_count, int lcm){
     fclose(target);
 
 }
+
+void createBeamer(algo_results *ar, int tasks_count, int lcm){
+    char tabular_name[10];
+    if(ar[0].selected==1){
+        strcpy(tabular_name,"tabular1");
+        createTabular(&ar[0], tasks_count, lcm, tabular_name);
+    }
+    
+    if(ar[1].selected==1){
+        strcpy(tabular_name,"tabular2");
+        createTabular(&ar[1], tasks_count, lcm, tabular_name);
+    }
+
+
+    if(ar[2].selected==1){
+        strcpy(tabular_name,"tabular3");
+        createTabular(&ar[2], tasks_count, lcm, tabular_name);
+    }
+
+    
+    copyTemplateToTempBash();
+
+    readTemplate();
+
+    compileBeamer();
+
+    
+};
 
 

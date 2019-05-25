@@ -10,9 +10,9 @@
 int copyTemplateToTempBash();
 int copyTemplateToTemp();
 int readTemplate();
-void createBeamer(int number);
+void createBeamer(algo_results *ar, int tasks_count, int lcm);
 void compileBeamer();
-void createTabular(algo_results *ar, int tasks_count, int lcm);
+void createTabular(algo_results *ar, int tasks_count, int lcm, char *tabular_name);
 
 
 #endif

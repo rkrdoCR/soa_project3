@@ -23,8 +23,10 @@ int main (){
     ar.matrix=m;
     ar.schedulable=1;
 
+    char tabular_name[10];
+    strcpy(tabular_name,"tabular");
     printf("Scheduling simulator: Reading template \n");
-    createTabular(&ar, 3, 8);
+    createTabular(&ar, 3, 8,tabular_name);
 
     //copyTemplateToTemp();
     copyTemplateToTempBash();
