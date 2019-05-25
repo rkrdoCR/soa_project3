@@ -101,6 +101,7 @@ int copyTemplateToTempBash(){
 
 void compileBeamer(){
     system("pdflatex -interaction nonstopmode -output-directory tmpfiles/ tmpfiles/template_final.tex >/dev/null");
+    system("evince tmpfiles/template_final.pdf &");
 }
 
 
@@ -196,10 +197,10 @@ void createBeamer(algo_results *ar, int tasks_count, int lcm){
     }
 
 
-    if(ar[2].selected==1){
-        strcpy(tabular_name,"tabular3");
-        createTabular(&ar[2], tasks_count, lcm, tabular_name);
-    }
+    // if(ar[2].selected==1){
+    //     strcpy(tabular_name,"tabular3");
+    //     createTabular(&ar[2], tasks_count, lcm, tabular_name);
+    // }
 
     
     copyTemplateToTempBash();
