@@ -5,8 +5,6 @@
 #include "utils/beamerGenerator.h"
 #include <string.h>
 
-int MCD = 1;
-
 void show_error(char *s)
 {
     GtkWidget *window;
@@ -103,26 +101,19 @@ void start_clicked(GtkWidget *widget, form_data *data)
         }
     }
 
-    //compute least common multiple
-    for (int i = 0; i < 6; i++)
+    int t_count_validate = 0;
+    for(int i = 0; i < 6; i++)
     {
-        if (settings->periods[i] > 0)
-        {
-            MCD = mcm(MCD, settings->periods[i]);
-        }
-    }
-    settings->MCD = MCD;
-
-    //Verificacion de datos, esto se quita
-    for (int i = 0; i < 6; i++)
-    {
-        printf("pos: %d executionTimes: %d periods %d\n", i, settings->executionTimes[i], settings->periods[i]);
+        if(settings->periods[i] > 0)
+            t_count_validate++;
     }
 
-    printf("MCD %d \n", settings->MCD);
+    if(t_count_validate < 2)
+    {
+        show_error("\n The minimum amount of tasks is 2.");
+        return;
+    }
 
-    //La comente pq se cae, pero con las lineas de arriba se ve que estoy pasando los datos
-    //bien, o sea en el arreglo
     generateBeamer(settings);
 }
 
@@ -147,49 +138,6 @@ int no_number(char num[])
         }
     }
     return FALSE;
-}
-
-int mcd(int n1, int n2)
-{
-    int mcd = 0;
-    int a = max(n1, n2);
-    int b = min(n1, n2);
-
-    do
-    {
-        mcd = b;
-        b = a % b;
-        a = mcd;
-    } while (b != 0);
-    return mcd;
-}
-
-int mcm(int n1, int n2)
-{
-
-    int mcm = 0;
-    int a = max(n1, n2);
-    int b = min(n1, n2);
-    mcm = round((a / mcd(a, b)) * b);
-    return mcm;
-}
-
-int min(int n1, int n2)
-{
-    if (n1 < n2)
-    {
-        return n1;
-    }
-    return n2;
-}
-
-int max(int n1, int n2)
-{
-    if (n1 > n2)
-    {
-        return n1;
-    }
-    return n2;
 }
 
 int main(int argc, char *argv[])
