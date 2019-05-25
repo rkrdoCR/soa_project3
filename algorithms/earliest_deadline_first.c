@@ -115,17 +115,17 @@ void schedule(int no_of_tasks, algo_results *results, int EXE_LEN)
     int cycles_left[no_of_tasks];
     int next_deadlines[no_of_tasks];
     int cycles_completed[no_of_tasks];
-
+    printf("\n");
     for (int i = 0; i < no_of_tasks; i++)
     {
         next_deadlines[i] = deadlines[i]; // next deadlines of task
         cycles_left[i] = WCET[i];         // time steps remaining for task execution
         cycles_completed[i] = 0;          // time steps completed
     }
-    //for (i = 0; i < period_LCM; i++)
-    for (int i = 0; i < EXE_LEN; i++)
+    for (int i = 0; i < period_LCM; i++)
+   // for (int i = 0; i < EXE_LEN; i++)
     {
-        printf("(%d,%d) : ", i, i + 1); // print current time slot
+        //printf("(%d,%d) : ", i, i + 1); // print current time slot
         earliest_deadlines = period_LCM;
         earliest_deadlines_index = -1;
         for (int j = 0; j < no_of_tasks; j++) // check all tasks
@@ -140,7 +140,7 @@ void schedule(int no_of_tasks, algo_results *results, int EXE_LEN)
             }
         }
         // printf("     [Task executed = %d]\n",earliest_deadlines_index); // current task assigned to time slot
-        printf("     [Task executed = %d]\n", (earliest_deadlines_index + 1)); // current task assigned to time slot
+        //printf("     [Task executed = %d]\n", (earliest_deadlines_index + 1)); // current task assigned to time slot
         if (earliest_deadlines_index >= 0)
         {
             results->matrix[earliest_deadlines_index][i] = (earliest_deadlines_index + 1);
@@ -244,8 +244,8 @@ void simulateEDF(task *task_raw, int count, int lcm, algo_results *results)
     if (f <= 1)
     {
         printf("\nThe system is schedulable because the CPU utilization %f <= 1", f);
-        printf("\n\nEDF Schedule\n");
-        printf("\nTime slice      Task executed\n");
+       // printf("\n\nEDF Schedule\n");
+       // printf("\nTime slice      Task executed\n");
         schedule(count, results, EXE_LEN);
     }
     else
