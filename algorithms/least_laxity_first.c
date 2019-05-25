@@ -10,6 +10,7 @@ typedef struct
     unsigned int period;
     int deadline;
 } task_t;
+int time_error = 0;
 
 algo_results runLLF(int *c, int *p, int count, int lcm)
 {
@@ -43,6 +44,12 @@ algo_results runLLF(int *c, int *p, int count, int lcm)
 
     free(tasks_set);
     results.selected = 1;
+
+    //error en tiempo de ejecucion
+    if (time_error > 0)
+    {
+        results.schedulable = 0;
+    }
     return results;
 }
 
@@ -80,17 +87,16 @@ void print_task(task_t t)
 {
     printf("exe time: %u period: %u deadline: %u \n", t.WCET, t.period, t.deadline);
 }
- 
+
 void print_tasks(task_t t[], unsigned int numTasks)
 {
-	unsigned int i;
-	for (i = 0; i < numTasks; ++i)
-	{
-		printf("task %u: ", i);
-		print_task(t[i]);
-	}
-	
-} 
+    unsigned int i;
+    for (i = 0; i < numTasks; ++i)
+    {
+        printf("task %u: ", i);
+        print_task(t[i]);
+    }
+}
 
 float utilization(task_t t[], unsigned int numTasks)
 {
@@ -143,10 +149,12 @@ void sim_schedule(task_t t[], unsigned int numTasks, unsigned int schedule[], un
     unsigned int i;
     for (i = 0; i < schedule_length; i++)
     {
-        schedule[i] = 0;
 
+        schedule[i] = 0;
+        
         //determine current task
         current_task = algo(placeholder_task, numTasks);
+       // printf("-->> i %d, y current_task %d  numTasks %d\n", i, current_task, numTasks);
 
         //"run" current task for 1 timestep
         placeholder_task[current_task].WCET -= 1;
@@ -155,6 +163,7 @@ void sim_schedule(task_t t[], unsigned int numTasks, unsigned int schedule[], un
         unsigned int j;
         for (j = 0; j < numTasks; j++)
         {
+
             placeholder_task[j].period -= 1;
             placeholder_task[j].deadline -= 1;
 
@@ -163,7 +172,16 @@ void sim_schedule(task_t t[], unsigned int numTasks, unsigned int schedule[], un
             {
                 if (placeholder_task[j].WCET > 0)
                 {
-                    SET_BIT(schedule[i], j + 16); //***********need a define for 16************
+                    SET_BIT(schedule[i], j + 16); //***need a define for 16**
+
+                    if (time_error == 0 && placeholder_task[j].WCET > 0)
+                    {
+                        time_error = i;
+                    }
+                    else
+                    {
+                       //printf("error no bandera i %d, y tengo %d  %d\n", i, placeholder_task[j].WCET);
+                    }
                 }
             }
 
@@ -175,11 +193,9 @@ void sim_schedule(task_t t[], unsigned int numTasks, unsigned int schedule[], un
                 placeholder_task[j].deadline = t[j].deadline;
             }
         }
-
         SET_BIT(schedule[i], current_task);
     }
 }
-
 
 void print_schedule(unsigned int schedule[], unsigned int length)
 {
@@ -196,7 +212,6 @@ void print_schedule(unsigned int schedule[], unsigned int length)
     }
     printf("\n");
 }
-
 
 //-----------------------------
 
@@ -217,7 +232,6 @@ void simulateLLF(task *task_raw, int count, int lcm, algo_results *results)
         period[i] = task_raw[i].period;
     }
 
-
     int exec_time = 0;
     for (int i = 0; i < count; i++)
     {
@@ -225,7 +239,7 @@ void simulateLLF(task *task_raw, int count, int lcm, algo_results *results)
     }
 
 #define EXE_LEN ((exec_time - 1))
-
+#define NUM_TASKS (count)
 
     //allocate matrix
     results->matrix = (int **)malloc(count * sizeof(int *));
@@ -235,7 +249,6 @@ void simulateLLF(task *task_raw, int count, int lcm, algo_results *results)
         //allocate rows (arrays) in matrix (2d array)
         results->matrix[a] = (int *)malloc(lcm * sizeof(int *));
     }
-
 
     //prebuild matrix
     for (int i = 0; i < count; i++)
@@ -247,33 +260,46 @@ void simulateLLF(task *task_raw, int count, int lcm, algo_results *results)
         }
     }
 
-
-
     task_t tasks[count];
     init_tasks(tasks, WCET, deadline, period, count);
 
     //print_tasks(tasks, count);
     printf("\n Least Laxity First \n");
 
-    unsigned int schedule[EXE_LEN];
-    sim_schedule(tasks, count, schedule, EXE_LEN, llf);
-
-
+    unsigned int schedule[lcm];
+    sim_schedule(tasks, count, schedule, lcm, llf);
 
     int i_matrix;
     int count_tasks;
-    for (i_matrix = 0; i_matrix < EXE_LEN; ++i_matrix)
+
+    for (i_matrix = 0; i_matrix < lcm; ++i_matrix)
     {
         count_tasks = 0;
         while (MASK_BIT(schedule[i_matrix], count_tasks) == 0)
         {
             count_tasks++;
         }
-        results->matrix[count_tasks] [i_matrix] = (count_tasks + 1);
+
+        if (count_tasks < count)
+        {
+            if (time_error > 0 && time_error == i_matrix)
+            {
+                results->matrix[count_tasks][i_matrix] = 13;
+            }
+            else
+            {
+                results->matrix[count_tasks][i_matrix] = (count_tasks + 1);
+            }
+        }
+        else
+        { //descanso cpu
+            for (int m = 0; m < count; ++m)
+            {
+                results->matrix[m][i_matrix] = 7;
+            }
+        }
     }
-   
 
-
-   // print_schedule(schedule, EXE_LEN);
+    //print_schedule(schedule, lcm);
     //--------------------------------------------
 }
