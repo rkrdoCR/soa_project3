@@ -167,6 +167,12 @@ void createTabular(algo_results *ar, int tasks_count, int lcm, char *tabular_nam
                     case 6:
                     strcat(buffer," \\cellcolor[HTML]{6434FC} &");
                     break;
+                    case 7:
+                    strcat(buffer," \\cellcolor[HTML]{FFCE93} &");
+                    break;
+                    case 13:
+                    strcat(buffer," \\cellcolor[HTML]{CB0000} &");
+                    break;                    
                 }
                 if(j== (lcm)){
                     strcat(buffer," \\hline\n");  
