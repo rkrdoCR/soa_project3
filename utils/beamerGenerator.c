@@ -55,13 +55,19 @@ void generateBeamer(simulation_settings *formSettings)
     free(c);
     free(p);
 
-    createBeamer(algoResults,j,lcm);
+    //createBeamer(algoResults,j,lcm);
     generateBeamerDoc(algoResults, j, lcm);
     
 }
 
 void generateBeamerDoc(algo_results *ar, int tasks_count, int lcm)
 {
+    int a;
+    for(a = 0; a < tasks_count; a++)
+    {
+        g_print("%d    %d\n", ar->tasks_set[a].execTime, ar->tasks_set[a].period);
+    }
+
     int i, j, k;
     for (k = 0; k < 3; k++)
     {

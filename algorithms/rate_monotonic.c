@@ -6,12 +6,18 @@ algo_results runRM(int *c, int *p, int count, int lcm)
     task *tasks_set = malloc(sizeof(task) * count);
     algo_results results;
 
+    results.tasks_set = malloc(sizeof(task) * count);
+
     //build task set
     int i, j = 0;
     for (i = 0; i < count; i++)
     {
         tasks_set[i].execTime = c[i];
         tasks_set[i].period = p[i];
+
+        results.tasks_set[i].execTime = c[i]; 
+        results.tasks_set[i].period = p[i];
+
         j++;
     }
 
@@ -31,11 +37,13 @@ algo_results runRM(int *c, int *p, int count, int lcm)
         results.schedulable = 0;
     }
 
+    //algrithm selected
+    results.selected = 1;
+
     //run simulation
     simulateRM(tasks_set, j, lcm, &results);
 
     free(tasks_set);
-    results.selected = 1;
     return results;
 }
 
