@@ -25,25 +25,34 @@ void copySnippet(char *token, char *snippet){
 
     snippetFile = fopen(full_path, "r");
     if(snippetFile == NULL){
-        printf("File for token does not exist");
+        printf("File for token does not exist\n");
     }else{
-        printf("copy Snippet i being reached");
+        printf("copy Snippet is being reached\n");
         while ((snippetCh = fgetc(snippetFile)) != EOF){
             //strcat(snippet, &snippetCh);
             snippet[index]=snippetCh;
             index++;
         }
-        printf("The snippet is: %s", snippet);
+        printf("The snippet is: \n%s", snippet);
+        printf("The snippet end");
+        fclose(snippetFile);
     }
 
-    fclose(snippetFile);
+    
+}
+
+void clean_buffer(char *buffer, int length){
+    int i=0;
+    for(i=0;i<length;i++){
+        buffer[i]="";
+    }
 }
 
 int readTemplate(){
     FILE *source, *target;
     char ch;
     char token[200] = "";
-    char buffer[1000] = "";
+    char buffer[2000] = "";
 
     source=fopen("tmpfiles/template.tex","r+");
     target=fopen("tmpfiles/template_final.tex", "w");
@@ -72,10 +81,11 @@ int readTemplate(){
                 fgets(token, 25, source);
                 
                 removeNewLine(token,200);
-                printf("Im about to get to copysnippet");
+                printf("Im about to get to copysnippet\n");
                 copySnippet(token,buffer);
+                fseek(target,-1,SEEK_CUR);
                 fprintf(target, "%s", buffer);
-
+                clean_buffer(buffer,2000);
             }else{
                 fputc(ch, target);
             }
@@ -192,7 +202,7 @@ void createTabular(algo_results *ar, int tasks_count, int lcm, char *tabular_nam
 
     //strcat(buffer, "\\hline\n");
     strcat(buffer, "\\end{tabular}\n");
-    strcat(buffer, "\\end{table}");
+    strcat(buffer, "\\end{table}\n");
 
     fprintf(target, "%s", buffer);
     fclose(target);
@@ -205,16 +215,19 @@ void createBeamer(algo_results *ar, int tasks_count, int lcm){
 
     if(ar[0].selected==1){
         strcpy(tabular_name,"tabular1");
+        printf("This is tabular name: %s", tabular_name);
         createTabular(&ar[0], tasks_count, lcm, tabular_name);
     }
     
     if(ar[1].selected==1){
         strcpy(tabular_name,"tabular2");
+        printf("This is tabular name: %s", tabular_name);
         createTabular(&ar[1], tasks_count, lcm, tabular_name);
     }
 
     if(ar[2].selected==1){
         strcpy(tabular_name,"tabular3");
+        printf("This is tabular name: %s", tabular_name);
         createTabular(&ar[2], tasks_count, lcm, tabular_name);
     }
 
