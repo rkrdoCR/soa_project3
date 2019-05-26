@@ -1,0 +1,16 @@
+\justify
+LLF es un algoritmo de scheduling por prioridades dinamicas para conjuntos de tareas.
+Cada instante (unidad de tiempo) es un evento de scheduling por que el laxity cambia en cada instante
+La tarea que tenga menos laxity en el instante es la de mayor prioridad
+La prioridad de una tarea es inversamente proporcional a su laxity en tiempo de ejecucion
+Los supuestos de LLF son iguales a los de EDF
+Para calcular el laxity de una tarea se usa: $L_i = d_i - (t_i - c_i)$
+donde di es el deadline de la tarea, $t_i$ es el instante de tiempo actual y $c_i$ es el tiempo de ejecucion pendiente\n
+																												
+																												
+																												
+																												
+																												
+																												
+																												
+																												

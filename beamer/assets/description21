@@ -1,0 +1,14 @@
+\justify
+Earliest Deadline First (EDF)
+Considerado por Liu y Layland (1973)
+EDF es un algoritmo expropiativo de scheduling para tiempo real dinámico
+El atributo dinámico significa que las prioridades cambian basadas en
+deadlines.
+Se revisan las prioridades cuando una tarea llega a la cola de ready
+Expropia la tarea que se ejecute en el momento
+Derivado de Highest Priority First (HPF)
+Algoritmo óptimo
+Esto significa que si la carga de trabajo es schedulable para otro
+algoritmo de prioridades, lo es también para el óptimo.
+La prioridad de una tarea es inversamente proporcional al tiempo pendiente
+para que se dé el deadline de la tarea.\n

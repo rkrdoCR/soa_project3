@@ -1,0 +1,10 @@
+Supuestos de LLF
+\begin{enumerate}
+\item Las solicitudes de todas las tareas ​ críticas ​ son periódicas ($p_i$)
+\item Todas las tareas son ​ independientes
+\item No hay restricciones de precedencia
+\item No se necesita exclusión mutua
+\item El ​ deadline ​ de cada tarea es igual a su periodo ($d_i = p_i$)
+\item Conocemos a priori el tiempo de computación ($c_i$)
+\item El cambio de contexto se toma como 0, o incluido en el $c_i$
+\end{enumerate}

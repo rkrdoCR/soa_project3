@@ -71,11 +71,13 @@
 %\usecolortheme{wolverine}
 
 %\setbeamertemplate{footline} % To remove the footer line in all slides uncomment this line
+\setbeamertemplate{caption}[numbered]
 \setbeamertemplate{footline}[page number] % To replace the footer line in all slides with a simple slide count uncomment this line
 
 \setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
 }
-
+\usepackage[utf8]{inputenc}
+\usepackage{ragged2e}
 %\usepackage[table,xcdraw]{xcolor}
 \usepackage{graphicx} % Allows including images
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
@@ -112,8 +114,7 @@ Tecnologico de Costa Rica\\ % Your institution for the title page
 \titlepage % Print the title page as the first slide
 \end{frame}
 
-\begin{frame}
-\frametitle{Overview} % Table of contents slide, comment this block out to remove it
+\begin{frame}{Overview} % Table of contents slide, comment this block out to remove it
 \tableofcontents % Throughout your presentation, if you choose to use \section{} and \subsection{} commands, these will automatically be printed on this slide as an overview of your presentation
 \end{frame}
 
@@ -123,19 +124,64 @@ Tecnologico de Costa Rica\\ % Your institution for the title page
 
 %------------------------------------------------
 
-\section{Resultados de simulación para algoritmos de scheduling en tiempop real}
-\begin{frame}{RM results}
+\section{Resultados de simulación para algoritmos de scheduling en tiempo real}
+
+%#subsectionrm
+%\begin{frame}{Descripción de Rate Monothonic}
+%#beginrmd
+%#description11
+%\end{frame}
+%#endrm
+
+%\begin{frame}{Descripción de Rate Monothonic}
+%#beginrmd
+%#description12
+%\end{frame}
+%#endrm
+
+%\begin{frame}{Resultados de Rate Monothonic}
+%#beginrms
 %#tabular1
-\end{frame}
+%\end{frame}
+%#endrm
 
-\begin{frame}{EDF results}
+%#subsectionedf
+%\begin{frame}{Descripción de Earliest Deadline first}
+%#beginedfd
+%#description21
+%\end{frame}
+%#endedf
+
+%\begin{frame}{Descripción de Earliest Deadline first}
+%#beginedfd
+%#description22
+%\end{frame}
+%#endedf
+
+%\begin{frame}{Resultados de Earliest Deadline first}
+%#beginedfs
 %#tabular2
-\end{frame}
+%\end{frame}
+%#endedf
 
-\begin{frame}{LLF results}
+%#subsectionllf
+%\begin{frame}{Descripción de Least Laxity First}
+%#beginllfd
+%#description31
+%\end{frame}
+%#endllf
+
+%\begin{frame}{Descripción de Least Laxity First}
+%#beginllfd
+%#description32
+%\end{frame}
+%#endllf
+
+%\begin{frame}{Resultados de Least Laxity First}
+%#beginllfs
 %#tabular3
-\end{frame}
-
+%\end{frame}
+%#endllf
 
 \end{document}
 
