@@ -151,10 +151,10 @@ void sim_schedule(task_t t[], unsigned int numTasks, unsigned int schedule[], un
     {
 
         schedule[i] = 0;
-        
+
         //determine current task
         current_task = algo(placeholder_task, numTasks);
-       // printf("-->> i %d, y current_task %d  numTasks %d\n", i, current_task, numTasks);
+        // printf("-->> i %d, y current_task %d  numTasks %d\n", i, current_task, numTasks);
 
         //"run" current task for 1 timestep
         placeholder_task[current_task].WCET -= 1;
@@ -180,7 +180,7 @@ void sim_schedule(task_t t[], unsigned int numTasks, unsigned int schedule[], un
                     }
                     else
                     {
-                       //printf("error no bandera i %d, y tengo %d  %d\n", i, placeholder_task[j].WCET);
+                        //printf("error no bandera i %d, y tengo %d  %d\n", i, placeholder_task[j].WCET);
                     }
                 }
             }
@@ -299,7 +299,45 @@ void simulateLLF(task *task_raw, int count, int lcm, algo_results *results)
             }
         }
     }
-
+    check_cpu_unused_fix(count, lcm, results);
     //print_schedule(schedule, lcm);
     //--------------------------------------------
+}
+
+void check_cpu_unused_fix(int count, int lcm, algo_results *results)
+{
+
+    int cpu_check = 0;
+    int i = 0;
+    for (int m = 0; m < lcm; ++m)
+    {
+        cpu_check = 0;
+
+        for (i = 0; i < count; ++i)
+        {
+            cpu_check += results->matrix[i][m];
+        }
+        if (cpu_check == 0)
+        {
+            for (int j = 0; j < count; ++j)
+            {
+                results->matrix[j][m] = 7;
+            }
+        }
+    }
+    print_matrix_o(count, lcm, results);
+}
+
+void print_matrix_o(int count, int lcm, algo_results *results)
+{
+
+    for (int i = 0; i < count; ++i)
+    {
+        printf("\n");
+        for (int m = 0; m < lcm; ++m)
+        {
+            printf("| %d", results->matrix[i][m]);
+        }
+    }
+    printf("\n");
 }
