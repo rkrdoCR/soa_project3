@@ -62,8 +62,6 @@ void generateBeamer(simulation_settings *formSettings)
 
 void generateBeamerDoc(algo_results *ar, int tasks_count, int lcm)
 {
-    g_print("Schedulability Test Results: u = %f --- U = %f\n\n", ar->u, ar->U);
-
     g_print("Tasks info \n");
 
     int a;
@@ -79,6 +77,7 @@ void generateBeamerDoc(algo_results *ar, int tasks_count, int lcm)
     {
         if (ar[k].selected == 1)
         {
+            g_print("Schedulability Test Results: u = %f --- U = %f\n\n", ar[k].u, ar[k].U);
             for (i = 0; i < tasks_count; i++)
             {
                 for (j = 0; j < lcm; j++)
@@ -87,9 +86,7 @@ void generateBeamerDoc(algo_results *ar, int tasks_count, int lcm)
                 }
                 g_print("\n");
             }
-
-            // int c;
-            // for (c = 0; c < ta)
+            
             free(ar[k].matrix);
         }
     }

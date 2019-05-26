@@ -31,6 +31,8 @@ algo_results runEDF(int *c, int *p, int count, int lcm)
 
     //compute utilization (u)
     double u = computeUtilization(tasks_set, j);
+    results.u = u;
+    results.U = MAX_U_EDF;
 
     //check schedulability and store it to results
     if (u <= MAX_U_EDF)
@@ -46,7 +48,7 @@ algo_results runEDF(int *c, int *p, int count, int lcm)
     simulateEDF(tasks_set, j, lcm, &results);
 
     free(tasks_set);
-    results.selected = 1;
+    results.selected = 1; 
     return results;
 }
 
@@ -232,9 +234,11 @@ void simulateEDF(task *task_raw, int count, int lcm, algo_results *results)
     get_period_LCM(count);
     printf("\nSchedulability Test:\n"); // commence schedulability test
     f = schedulability(count);
-    if (f <= 1)
+
+    if (f <= MAX_U_EDF)
     {
         printf("\nThe system is schedulable because the CPU utilization %f <= 1", f);
+         results->schedulable = 1;
         // printf("\n\nEDF Schedule\n");
         // printf("\nTime slice      Task executed\n");
         schedule((count + 1), results, exec_time, lcm);
