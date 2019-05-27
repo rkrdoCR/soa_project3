@@ -26,6 +26,10 @@ algo_results runEDF(int *c, int *p, int count, int lcm)
     {
         tasks_set[i].execTime = c[i];
         tasks_set[i].period = p[i];
+
+        results.tasks_set[i].execTime = c[i]; 
+        results.tasks_set[i].period = p[i];
+
         j++;
     }
 
@@ -48,7 +52,7 @@ algo_results runEDF(int *c, int *p, int count, int lcm)
     simulateEDF(tasks_set, j, lcm, &results);
 
     free(tasks_set);
-    results.selected = 1; 
+    results.selected = 1;
     return results;
 }
 
@@ -238,7 +242,7 @@ void simulateEDF(task *task_raw, int count, int lcm, algo_results *results)
     if (f <= MAX_U_EDF)
     {
         printf("\nThe system is schedulable because the CPU utilization %f <= 1", f);
-         results->schedulable = 1;
+        results->schedulable = 1;
         // printf("\n\nEDF Schedule\n");
         // printf("\nTime slice      Task executed\n");
         schedule((count + 1), results, exec_time, lcm);
@@ -249,5 +253,11 @@ void simulateEDF(task *task_raw, int count, int lcm, algo_results *results)
         results->schedulable = 0;
         schedule((count + 1), results, exec_time, lcm);
     }
+
+    check_cpu_unused_fix(count, lcm, results);
+
     return 0;
 }
+
+ 
+

@@ -23,6 +23,10 @@ algo_results runLLF(int *c, int *p, int count, int lcm)
     {
         tasks_set[i].execTime = c[i];
         tasks_set[i].period = p[i];
+
+        results.tasks_set[i].execTime = c[i]; 
+        results.tasks_set[i].period = p[i];
+
         j++;
     }
 
