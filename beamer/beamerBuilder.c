@@ -343,8 +343,207 @@ void createTabular(algo_results *ar, int tasks_count, int lcm, char *tabular_nam
     printf("file closed successfully");
 }
 
+void createTabularCA(algo_results *ar0, algo_results *ar1, algo_results *ar2, int tasks_count, int lcm, char *tabular_name){
+    FILE *target;
+    char full_path[100];
+    strcpy(full_path,"tmpfiles/");
+    strcat(full_path,tabular_name);
 
-void createBeamer(algo_results *ar, int tasks_count, int lcm){
+    target=fopen(full_path, "w");
+    char buffer[30000]="";
+    int i,j,k=0;
+    char str_i[100];
+    char title_name[100];
+
+    printf("Creating this tabular: %s", tabular_name);
+
+    strcat(buffer, "\\begin{table}[]\n");
+
+    //table title
+    //strcat(buffer,"\\caption {Table Title} \\label{tab:title}");
+    strcat(buffer,"\\caption {");
+    StringDecoder(tabular_name,title_name);
+    strcat(buffer,title_name);
+    strcat(buffer,"} \\label{tab:");
+    strcat(buffer,tabular_name);
+    strcat(buffer,"}\n");
+
+
+    strcat(buffer, "\\small\\addtolength{\\tabcolsep}{-5pt}\n");
+    strcat(buffer, "\\begin{tabular}");
+    strcat(buffer, "{");
+    for(i=0; i<lcm+1;i++){
+        strcat(buffer,"|l");
+    }
+    strcat(buffer, "|}\n");
+    strcat(buffer, "\\hline\n");
+
+    for(i=0;i<lcm+1;i++){
+        if(i==0){
+            strcat(buffer," ");
+        }else{
+            memset(str_i,0,100);
+            sprintf(str_i,"%d",i);
+            printf("stri_i %s", str_i);
+            strcat(buffer, str_i);
+        }
+        strcat(buffer,"&"); 
+    }
+    printf("Done with table header");
+    strcat(buffer," \\hline\n"); 
+
+    if(ar0->selected==1){
+        for(i=0; i<tasks_count;i++){
+            for(j=0;j<lcm+1;j++){
+                if(j==0){
+                    strcat(buffer,"T: ");
+                    sprintf(str_i,"%d",i);
+                    strcat(buffer, str_i);
+                    strcat(buffer," &");
+                }else{
+                    switch(ar0->matrix[i][j-1]){
+                        case 0:
+                        strcat(buffer," &");  
+                        break;
+                        case 1:
+                        strcat(buffer," \\cellcolor[HTML]{6434FC} &");
+                        break;
+                        case 2:
+                        strcat(buffer," \\cellcolor[HTML]{F56B00} &");
+                        break;
+                        case 3:
+                        strcat(buffer," \\cellcolor[HTML]{F8FF00} &");
+                        break;
+                        case 4:
+                        strcat(buffer," \\cellcolor[HTML]{003532} &");
+                        break;
+                        case 5:
+                        strcat(buffer," \\cellcolor[HTML]{94FF99} &");
+                        break;
+                        case 6:
+                        strcat(buffer," \\cellcolor[HTML]{6434FC} &");
+                        break;
+                        case 7:
+                        strcat(buffer," \\cellcolor[HTML]{FFCE93} &");
+                        break;
+                        case 13:
+                        strcat(buffer," \\cellcolor[HTML]{CB0000} &");
+                        break;                    
+                    }
+                    if(j== (lcm)){
+                        strcat(buffer," \\hline\n");  
+                    }
+                }
+            }
+        }       
+    }
+
+    if(ar1->selected==1){
+        for(i=0; i<tasks_count;i++){
+            for(j=0;j<lcm+1;j++){
+                if(j==0){
+                    strcat(buffer,"T: ");
+                    sprintf(str_i,"%d",i);
+                    strcat(buffer, str_i);
+                    strcat(buffer," &");
+                }else{
+                    switch(ar1->matrix[i][j-1]){
+                        case 0:
+                        strcat(buffer," &");  
+                        break;
+                        case 1:
+                        strcat(buffer," \\cellcolor[HTML]{6434FC} &");
+                        break;
+                        case 2:
+                        strcat(buffer," \\cellcolor[HTML]{F56B00} &");
+                        break;
+                        case 3:
+                        strcat(buffer," \\cellcolor[HTML]{F8FF00} &");
+                        break;
+                        case 4:
+                        strcat(buffer," \\cellcolor[HTML]{003532} &");
+                        break;
+                        case 5:
+                        strcat(buffer," \\cellcolor[HTML]{94FF99} &");
+                        break;
+                        case 6:
+                        strcat(buffer," \\cellcolor[HTML]{6434FC} &");
+                        break;
+                        case 7:
+                        strcat(buffer," \\cellcolor[HTML]{FFCE93} &");
+                        break;
+                        case 13:
+                        strcat(buffer," \\cellcolor[HTML]{CB0000} &");
+                        break;                    
+                    }
+                    if(j== (lcm)){
+                        strcat(buffer," \\hline\n");  
+                    }
+                }
+            }
+        }
+    }
+
+
+    if(ar2->selected==1){
+        for(i=0; i<tasks_count;i++){
+            for(j=0;j<lcm+1;j++){
+                if(j==0){
+                    strcat(buffer,"T: ");
+                    sprintf(str_i,"%d",i);
+                    strcat(buffer, str_i);
+                    strcat(buffer," &");
+                }else{
+                    switch(ar2->matrix[i][j-1]){
+                        case 0:
+                        strcat(buffer," &");  
+                        break;
+                        case 1:
+                        strcat(buffer," \\cellcolor[HTML]{6434FC} &");
+                        break;
+                        case 2:
+                        strcat(buffer," \\cellcolor[HTML]{F56B00} &");
+                        break;
+                        case 3:
+                        strcat(buffer," \\cellcolor[HTML]{F8FF00} &");
+                        break;
+                        case 4:
+                        strcat(buffer," \\cellcolor[HTML]{003532} &");
+                        break;
+                        case 5:
+                        strcat(buffer," \\cellcolor[HTML]{94FF99} &");
+                        break;
+                        case 6:
+                        strcat(buffer," \\cellcolor[HTML]{6434FC} &");
+                        break;
+                        case 7:
+                        strcat(buffer," \\cellcolor[HTML]{FFCE93} &");
+                        break;
+                        case 13:
+                        strcat(buffer," \\cellcolor[HTML]{CB0000} &");
+                        break;                    
+                    }
+                    if(j== (lcm)){
+                        strcat(buffer," \\hline\n");  
+                    }
+                }
+            }
+        }
+    }
+
+    printf("Done with table body");
+
+    //strcat(buffer, "\\hline\n");
+    strcat(buffer, "\\end{tabular}\n");
+    strcat(buffer, "\\end{table}\n");
+
+    fprintf(target, "%s", buffer);
+    fclose(target);
+    printf("file closed successfully");
+}
+
+
+void createBeamer(algo_results *ar, int tasks_count, int lcm, int combine_all){
     char tabular_name[10];
     flushTempFiles();
     flushDecoder();
@@ -400,6 +599,14 @@ void createBeamer(algo_results *ar, int tasks_count, int lcm){
         copyTemplateToTempBash("description32");
         createTestResults(&ar[2], "results3");
         createTabular(&ar[2], tasks_count, lcm, "tabular3");
+    }
+
+    if(combine_all==1){
+        addKeyToDecoder("subsectionCA","\\subsection{Todos los algoritmos combinados}");
+        addKeyToDecoder("tabularCA","Resultados de simulacion de algoritmos combinados");
+        addKeyToDecoder("beginCA","\\begin{frame}{Combinacion de todos los algoritmos}\n");
+        addKeyToDecoder("endCA","\n\\end{frame}\n");
+        createTabularCA(&ar[0],&ar[1],&ar[2], tasks_count, lcm, "tabularCA");
     }
 
     readTemplate();

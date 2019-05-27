@@ -55,7 +55,7 @@ void generateBeamer(simulation_settings *formSettings)
     free(c);
     free(p);
 
-    createBeamer(algoResults,j,lcm);
+    createBeamer(algoResults,j,lcm, formSettings->combineAll);
     //generateBeamerDoc(algoResults, j, lcm);
     
 }
