@@ -25,7 +25,7 @@ gráfica hecha con GTK y se generará una presentación _Beamer_
 como salida. Toda la programación debe realizarse en C sobre
 Linux.
 
-I. Algoritmos:
+II. Algoritmos:
 ============================
 Deben investigar e implementar los siguientes algoritmos
 de scheduling para tareas periódicas en un RTOS:
@@ -112,7 +112,7 @@ correo. Identifique claramente su correo con el siguiente subject:
 [SOA] Proyecto Programado 3 - Apellido
 1 - Apellido 2 - Apellido 3
 
-VII. Ejecución
+VI. Ejecución
 ============================
 1. Compilar el programa desde la carpeta raíz usando el siguiente comando:
 
@@ -124,8 +124,8 @@ Con el comando anterior se mueve a la carpeta build y además levanta la ejecuci
 
 VII. Referencias
 ============================
-1. C. L. Liu, J. Layland, “Scheduling Algorithms for Multiprogramming
-in a Hard-Real-Time Environment”, Journal of the ACM, Vol. 20, No.
+1. C. L. Liu, J. Layland, "Scheduling Algorithms for Multiprogramming
+in a Hard-Real-Time Environment", Journal of the ACM, Vol. 20, No.
 1, January 1973.
-2. E. Bini, G. Buttazzo, G. Butazzo, “Rate Monotonic Analysis: the
-Hyperbolic Bound”, IEEE Trans. Computers, Vol. 52, 2003.
+2. E. Bini, G. Buttazzo, G. Butazzo, "Rate Monotonic Analysis: the
+Hyperbolic Bound", IEEE Trans. Computers, Vol. 52, 2003.
