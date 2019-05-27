@@ -8,4 +8,4 @@ RM también será schedulable.
 La prioridad de una tarea es directamente proporcional al rate (cuantas veces ocurre por
 unidad de tiempo) de la tarea. El que más veces ocurra es el que tiene más prioridad.
 Se maneja como algoritmo expropiativo: si llega a la cola de ready un proceso con rate más
-alto, se expropia al proceso actual.\n
+alto, se expropia al proceso actual.

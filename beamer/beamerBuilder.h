@@ -18,5 +18,7 @@ void flushTempFiles();
 void StringDecoder(char *input, char *output);
 void addKeyToDecoder(char *key, char *value);
 void flushDecoder();
+void createTestResults();
+void createTaskSet(algo_results *ar, int tasks_count);
 
 #endif

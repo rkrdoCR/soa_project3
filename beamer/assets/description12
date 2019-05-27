@@ -6,4 +6,4 @@ necesita exclusión mutua.
 	\item El deadline de cada tarea es igual a su periodo ($d_i = p_i$).
 	\item Conocemos a priori el tiempo de computación ($c_i$).
 	\item El cambio de contexto es igual a 0 o está ya considerado en el $c_i$.
-\end{enumerate}\n
+\end{enumerate}

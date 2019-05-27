@@ -11,4 +11,4 @@ Algoritmo óptimo
 Esto significa que si la carga de trabajo es schedulable para otro
 algoritmo de prioridades, lo es también para el óptimo.
 La prioridad de una tarea es inversamente proporcional al tiempo pendiente
-para que se dé el deadline de la tarea.\n
+para que se dé el deadline de la tarea.

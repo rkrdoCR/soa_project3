@@ -58,6 +58,8 @@ int readTemplate(){
     char token[200] = "";
     char buffer[2000] = "";
 
+    printf("Start of read template");
+
     source=fopen("tmpfiles/template.tex","r+");
     target=fopen("tmpfiles/template_final.tex", "w");
 
@@ -164,7 +166,78 @@ void flushDecoder(){
     }
 }
 
+void createTaskSet(algo_results *ar, int tasks_count){
+    FILE *target;
+    int i=0;
+    char temp[100];
+    char buffer[1000]="";
 
+    target=fopen("tmpfiles/taskset", "w");
+    
+    strcat(buffer, "\\begin{table}[]\n");
+    strcat(buffer,"\\caption {conjunto de tareas} \\label{tab:TaskSet}");
+    strcat(buffer, "\\small\\addtolength{\\tabcolsep}{-5pt}\n");
+    strcat(buffer, "\\begin{tabular}{|l|l|l|}");
+    strcat(buffer, "\\hline\n");
+    strcat(buffer, "Tarea & Tiempo de computacion & Periodo &\\hline\n");
+    for(i=0;i<tasks_count;i++){
+        memset(temp,0,100);
+        sprintf(temp,"%d",i);
+        strcat(buffer, temp);
+        strcat(buffer," &");
+
+        memset(temp,0,100);
+        sprintf(temp,"%d",ar->tasks_set[i].execTime);
+        strcat(buffer, temp);
+        strcat(buffer," &");
+
+        memset(temp,0,100);
+        sprintf(temp,"%d",ar->tasks_set[i].period);
+        strcat(buffer, temp);
+        strcat(buffer," &");
+        strcat(buffer, " \\hline\n");
+    }
+    strcat(buffer, "\\end{tabular}\n");
+    strcat(buffer, "\\end{table}\n");
+
+    fprintf(target, "%s", buffer);
+    fclose(target);
+}
+
+void createTestResults(algo_results *ar, char *results_name){
+    FILE *target;
+    char full_path[100];
+    char temp[100];
+    char buffer[1000]="";
+
+
+    strcpy(full_path,"tmpfiles/");
+    strcat(full_path,results_name);
+    target=fopen(full_path, "w");
+    
+    strcat(buffer, "Resultados de simulacion\\\\");
+    
+    memset(temp,0,100);
+    strcat(buffer, "El resultado es schedulable 0(no) 1(si): ");
+    sprintf(temp,"%d",ar->schedulable);
+    strcat(buffer, temp);
+    strcat(buffer, "\\\\");
+
+    memset(temp,0,100);
+    strcat(buffer, "El test para este algoritmo dio: ");
+    sprintf(temp,"%f",ar->u);
+    strcat(buffer, temp);
+    strcat(buffer, "\\\\");
+
+    memset(temp,0,100);
+    strcat(buffer, "El limite teorico para este test era: ");
+    sprintf(temp,"%f",ar->U);
+    strcat(buffer, temp);
+    strcat(buffer, "\\\\");
+
+    fprintf(target, "%s", buffer);
+    fclose(target);
+}
 
 void createTabular(algo_results *ar, int tasks_count, int lcm, char *tabular_name){
     FILE *target;
@@ -274,7 +347,18 @@ void createBeamer(algo_results *ar, int tasks_count, int lcm){
     flushTempFiles();
     flushDecoder();
     copyTemplateToTempBash("template.tex");
-
+    copyTemplateToTempBash("logo-tec.png");
+    
+    if(ar[0].selected==1){
+        createTaskSet(&ar[0], tasks_count);
+    }else{
+        if(ar[1].selected==1){
+            createTaskSet(&ar[1], tasks_count);
+        }else{
+            createTaskSet(&ar[2], tasks_count);
+        }
+    }
+    
 
     if(ar[0].selected==1){
         addKeyToDecoder("subsectionrm","\\subsection{Rate Monothonic}");
@@ -282,9 +366,10 @@ void createBeamer(algo_results *ar, int tasks_count, int lcm){
         addKeyToDecoder("beginrmd","\\begin{frame}{Descripcion de Rate Monothonic}\n");
         addKeyToDecoder("beginrmt","\\begin{frame}{Resultados test de Rate Monothonic}\n");
         addKeyToDecoder("beginrms","\\begin{frame}{Resultados sim de Rate Monothonic}\n");
-        addKeyToDecoder("endrm","\\end{frame}\n");
+        addKeyToDecoder("endrm","\n\\end{frame}\n");
         copyTemplateToTempBash("description11");
         copyTemplateToTempBash("description12");
+        createTestResults(&ar[0], "results1");
         createTabular(&ar[0], tasks_count, lcm, "tabular1");
     }
     
@@ -294,9 +379,10 @@ void createBeamer(algo_results *ar, int tasks_count, int lcm){
         addKeyToDecoder("beginedfd","\\begin{frame}{Descripcion de Earliest Deadline first}\n");
         addKeyToDecoder("beginedft","\\begin{frame}{Resultados test de Earliest Deadline first}\n");
         addKeyToDecoder("beginedfs","\\begin{frame}{Resultados sim de Earliest Deadline first}\n");
-        addKeyToDecoder("endedf","\\end{frame}\n");
+        addKeyToDecoder("endedf","\n\\end{frame}\n");
         copyTemplateToTempBash("description21");
         copyTemplateToTempBash("description22");
+        createTestResults(&ar[1], "results2");
         createTabular(&ar[1], tasks_count, lcm, "tabular2");
     }
 
@@ -306,14 +392,14 @@ void createBeamer(algo_results *ar, int tasks_count, int lcm){
         addKeyToDecoder("beginllfd","\\begin{frame}{Descripcion de Least Laxity First}\n");
         addKeyToDecoder("beginllft","\\begin{frame}{Resultados test de Least Laxity First}\n");
         addKeyToDecoder("beginllfs","\\begin{frame}{Resultados sim de Least Laxity First}\n");
-        addKeyToDecoder("endllf","\\end{frame}\n");
+        addKeyToDecoder("endllf","\n\\end{frame}\n");
         copyTemplateToTempBash("description31");
         copyTemplateToTempBash("description32");
+        createTestResults(&ar[2], "results3");
         createTabular(&ar[2], tasks_count, lcm, "tabular3");
     }
 
     readTemplate();
-
     compileBeamer();
 
     
