@@ -56,7 +56,7 @@ int readTemplate(){
     FILE *source, *target;
     char ch;
     char token[200] = "";
-    char buffer[2000] = "";
+    char buffer[10000] = "";
 
     printf("Start of read template");
 
@@ -93,7 +93,7 @@ int readTemplate(){
                 fseek(target,-1,SEEK_CUR);
                 fprintf(target, "%s", buffer);
                 //clean_buffer(buffer,2000);
-                memset(buffer, 0, 2000);
+                memset(buffer, 0, 10000);
             }else{
                 fputc(ch, target);
             }
@@ -246,7 +246,7 @@ void createTabular(algo_results *ar, int tasks_count, int lcm, char *tabular_nam
     strcat(full_path,tabular_name);
 
     target=fopen(full_path, "w");
-    char buffer[1000]="";
+    char buffer[10000]="";
     int i,j,k=0;
     char str_i[100];
     char title_name[100];
@@ -278,6 +278,7 @@ void createTabular(algo_results *ar, int tasks_count, int lcm, char *tabular_nam
         if(i==0){
             strcat(buffer," ");
         }else{
+            memset(str_i,0,100);
             sprintf(str_i,"%d",i);
             printf("stri_i %s", str_i);
             strcat(buffer, str_i);
