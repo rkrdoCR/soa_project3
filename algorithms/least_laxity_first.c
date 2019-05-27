@@ -17,6 +17,8 @@ algo_results runLLF(int *c, int *p, int count, int lcm)
     task *tasks_set = malloc(sizeof(task) * count);
     algo_results results;
 
+    results.tasks_set = malloc(sizeof(task) * count);
+
     //build task set
     int i, j = 0;
     for (i = 0; i < count; i++)

@@ -387,6 +387,7 @@ void createBeamer(algo_results *ar, int tasks_count, int lcm){
     }
 
     if(ar[2].selected==1){
+        printf("llf selected");
         addKeyToDecoder("subsectionllf","\\subsection{Least Laxity first}");
         addKeyToDecoder("tabular3","Resultados de simulacion de Least Laxity first");
         addKeyToDecoder("beginllfd","\\begin{frame}{Descripcion de Least Laxity First}\n");
