@@ -117,11 +117,11 @@ void start_clicked(GtkWidget *widget, form_data *data)
     generateBeamer(settings);
 }
 
-void reset_clicked(GtkWidget *widget, gpointer data)
+/*void reset_clicked(GtkWidget *widget, gpointer data)
 {
 
     g_print("reset clicked\n");
-}
+}*/
 
 int no_number(char num[])
 {
@@ -153,7 +153,7 @@ int main(int argc, char *argv[])
     GtkWidget *header_exec_label, *header_period_label, *t1_label, *t2_label, *t3_label,
         *t4_label, *t5_label, *t6_label;
 
-    GtkWidget *start_button, *reset_button;
+    GtkWidget *start_button;//, *reset_button;
 
     GtkWidget *vbox;
     GtkWidget *hbox;
@@ -179,13 +179,13 @@ int main(int argc, char *argv[])
                      NULL);
 
     start_button = gtk_button_new_with_label("Start");
-    reset_button = gtk_button_new_with_label("Reset");
+    //reset_button = gtk_button_new_with_label("Reset");
 
     g_signal_connect(G_OBJECT(start_button), "clicked",
                      G_CALLBACK(start_clicked), &f_data);
 
-    g_signal_connect(G_OBJECT(reset_button), "clicked",
-                     G_CALLBACK(reset_clicked), NULL);
+    /*g_signal_connect(G_OBJECT(reset_button), "clicked",
+                     G_CALLBACK(reset_clicked), NULL);*/
 
     gtk_container_set_border_width(GTK_CONTAINER(window), 10);
 
@@ -274,7 +274,7 @@ int main(int argc, char *argv[])
     gtk_grid_attach(GTK_GRID(main_grid), tasks_vbox, 0, 0, 4, 1);
     gtk_grid_attach(GTK_GRID(main_grid), algo_hbox, 0, 2, 1, 1);
     gtk_grid_attach(GTK_GRID(main_grid), start_button, 2, 3, 1, 1);
-    gtk_grid_attach(GTK_GRID(main_grid), reset_button, 3, 3, 1, 1);
+    //gtk_grid_attach(GTK_GRID(main_grid), reset_button, 3, 3, 1, 1);
 
     gtk_grid_attach(GTK_GRID(main_grid), f_data.cb_combine_all, 2, 2, 2, 1);
 
