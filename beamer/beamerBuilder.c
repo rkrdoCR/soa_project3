@@ -139,6 +139,7 @@ int copyTemplateToTempBash(char *file_to_copy){
 
 void compileBeamer(){
     system("pdflatex -interaction nonstopmode -output-directory tmpfiles/ tmpfiles/template_final.tex >/dev/null");
+    system("pdflatex -interaction nonstopmode -output-directory tmpfiles/ tmpfiles/template_final.tex >/dev/null");
     system("evince tmpfiles/template_final.pdf &");
 }
 
